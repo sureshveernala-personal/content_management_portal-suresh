@@ -4,7 +4,7 @@ from django_swagger_utils.drf_server.exceptions import NotFound
 from content_management_portal.interactors.storages.\
     prefilled_code_storage_interface import PrefilledCodeStorageInterface
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface\
     import PresenterInterface
 from content_management_portal.interactors.create_prefilled_codes_interactor\
@@ -17,16 +17,16 @@ def test_create_prefilled_code_interactor_with_invalid_question_id_raises_error(
     # Arrange
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreatePrefilledCodesInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = False
+    question_storage.is_valid_question_id.return_value = False
     presenter.raise_invalid_question_id_exception.side_effect = NotFound
 
     # Act
@@ -36,7 +36,7 @@ def test_create_prefilled_code_interactor_with_invalid_question_id_raises_error(
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
 
@@ -47,16 +47,16 @@ def test_create_prefilled_code_interactor_with_invalid_prefilled_code_id_raises_
     # Arrange
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreatePrefilledCodesInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.get_prefilled_code_ids.return_value = [2]
     prefilled_code_storage.get_question_prefilled_code_ids.return_value = [1]
     presenter.raise_invalid_prefilled_code_id_exception.side_effect = NotFound
@@ -68,7 +68,7 @@ def test_create_prefilled_code_interactor_with_invalid_prefilled_code_id_raises_
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     prefilled_code_storage.get_prefilled_code_ids.assert_called_once()
@@ -82,16 +82,16 @@ def test_create_prefilled_code_interactor_with_invalid_questions_prefilled_code_
     # Arrange
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreatePrefilledCodesInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.get_prefilled_code_ids.return_value = [1]
     prefilled_code_storage.get_question_prefilled_code_ids.return_value = [2]
     presenter.raise_prefilled_code_not_belongs_to_question_exception.side_effect = NotFound
@@ -103,7 +103,7 @@ def test_create_prefilled_code_interactor_with_invalid_questions_prefilled_code_
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     prefilled_code_storage.get_prefilled_code_ids.assert_called_once()
@@ -119,16 +119,16 @@ def test_create_prefilled_code_interactor_with_valid_details(
     # Arrange
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreatePrefilledCodesInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.get_prefilled_code_ids.return_value = [1]
     prefilled_code_storage.get_question_prefilled_code_ids.return_value = [1]
     prefilled_code_storage.update_prefilled_codes.return_value = None
@@ -144,7 +144,7 @@ def test_create_prefilled_code_interactor_with_valid_details(
     )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     prefilled_code_storage.get_prefilled_code_ids.assert_called_once()
@@ -160,7 +160,8 @@ def test_create_prefilled_code_interactor_with_valid_details(
         question_id=question_id, prefilled_code_dtos=prefilled_code_dtos[1:]
     )
     presenter.get_create_prefilled_codes_response.assert_called_once_with(
-        prefilled_codes_dto_with_question_id=prefilled_code_with_question_id_dtos
+        question_id=question_id,
+        prefilled_code_with_question_id_dtos=prefilled_code_with_question_id_dtos
     )
     assert response == prefilled_code_with_question_id_dtos
 
@@ -172,21 +173,21 @@ def test_create_prefilled_code_interactor_when_no_new_solutions(
     ):
     # Arrange
     question_id = 1
-    prefilled_code_with_question_id_dtos.prefilled_codes = \
-        [prefilled_code_with_question_id_dtos.prefilled_codes[0]]
+    prefilled_code_with_question_id_dtos = \
+        [prefilled_code_with_question_id_dtos[0]]
     prefilled_code_with_question_id_dicts['prefilled_codes'] = \
         [prefilled_code_with_question_id_dicts['prefilled_codes'][0]]
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreatePrefilledCodesInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.get_prefilled_code_ids.return_value = [1]
     prefilled_code_storage.get_question_prefilled_code_ids.return_value = [1]
     prefilled_code_storage.update_prefilled_codes.return_value = None
@@ -202,7 +203,7 @@ def test_create_prefilled_code_interactor_when_no_new_solutions(
     )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     prefilled_code_storage.get_prefilled_code_ids.assert_called_once()
@@ -218,7 +219,8 @@ def test_create_prefilled_code_interactor_when_no_new_solutions(
         question_id=question_id, prefilled_code_dtos=[]
     )
     presenter.get_create_prefilled_codes_response.assert_called_once_with(
-        prefilled_codes_dto_with_question_id=prefilled_code_with_question_id_dtos
+        question_id=question_id,
+        prefilled_code_with_question_id_dtos=prefilled_code_with_question_id_dtos
     )
     assert response == prefilled_code_with_question_id_dicts
 
@@ -230,21 +232,21 @@ def test_create_prefilled_code_interactor_when_no_upadates(
     ):
     # Arrange
     question_id = 1
-    prefilled_code_with_question_id_dtos.prefilled_codes = \
-        [prefilled_code_with_question_id_dtos.prefilled_codes[1]]
+    prefilled_code_with_question_id_dtos = \
+        [prefilled_code_with_question_id_dtos[1]]
     prefilled_code_with_question_id_dicts['prefilled_codes'] = \
         [prefilled_code_with_question_id_dicts['prefilled_codes'][1]]
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreatePrefilledCodesInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.update_prefilled_codes.return_value = None
     prefilled_code_storage.create_prefilled_codes.return_value = None
     prefilled_code_storage.get_prefilled_codes.return_value = \
@@ -258,7 +260,7 @@ def test_create_prefilled_code_interactor_when_no_upadates(
     )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     prefilled_code_storage.get_prefilled_code_ids.assert_called_once()
@@ -274,6 +276,7 @@ def test_create_prefilled_code_interactor_when_no_upadates(
         question_id=1, prefilled_code_dtos=prefilled_code_dtos[1:]
     )
     presenter.get_create_prefilled_codes_response.assert_called_once_with(
-        prefilled_codes_dto_with_question_id=prefilled_code_with_question_id_dtos
+        question_id=question_id,
+        prefilled_code_with_question_id_dtos=prefilled_code_with_question_id_dtos
     )
     assert response == prefilled_code_with_question_id_dicts

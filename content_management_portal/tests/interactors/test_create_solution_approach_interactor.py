@@ -4,13 +4,11 @@ from django_swagger_utils.drf_server.exceptions import NotFound
 from content_management_portal.interactors.storages.\
     solution_approach_storage_interface import SolutionApproachStorageInterface
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface\
     import PresenterInterface
 from content_management_portal.interactors.create_solution_approach_interactor\
     import CreateSolutionApproachInteractor
-from content_management_portal.interactors.storages.dtos import \
-    SolutionApproachDto
 
 
 def test_create_solution_approach_interactor_with_invalid_question_id_raises_error(
@@ -19,16 +17,16 @@ def test_create_solution_approach_interactor_with_invalid_question_id_raises_err
     # Arrange
     question_id = 1
     solution_approach_storage = create_autospec(SolutionApproachStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreateSolutionApproachInteractor(
         solution_approach_storage=solution_approach_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = False
+    question_storage.is_valid_question_id.return_value = False
     presenter.raise_invalid_question_id_exception.side_effect = NotFound
 
     # Act
@@ -38,7 +36,7 @@ def test_create_solution_approach_interactor_with_invalid_question_id_raises_err
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
 
@@ -50,16 +48,16 @@ def test_create_solution_approach_interactor_with_invalid_solution_approach_id_r
     question_id = 1
     solution_approach_id = 1
     solution_approach_storage = create_autospec(SolutionApproachStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreateSolutionApproachInteractor(
         solution_approach_storage=solution_approach_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     solution_approach_storage.is_valid_solution_approach_id.return_value = False
     presenter.raise_invalid_solution_approach_id_exception.side_effect = NotFound
 
@@ -70,7 +68,7 @@ def test_create_solution_approach_interactor_with_invalid_solution_approach_id_r
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     solution_approach_storage.is_valid_solution_approach_id.assert_called_once_with(
@@ -85,16 +83,16 @@ def test_create_solution_approach_interactor_when_solution_approach_not_belongs_
     question_id = 1
     solution_approach_id = 1
     solution_approach_storage = create_autospec(SolutionApproachStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreateSolutionApproachInteractor(
         solution_approach_storage=solution_approach_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     solution_approach_storage.is_valid_solution_approach_id.return_value = True
     solution_approach_storage.is_solution_approach_belongs_to_question.return_value = False
     presenter.raise_solution_approach_not_belongs_to_question_exception.side_effect = NotFound
@@ -106,7 +104,7 @@ def test_create_solution_approach_interactor_when_solution_approach_not_belongs_
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     solution_approach_storage.is_valid_solution_approach_id.assert_called_once_with(
@@ -125,16 +123,16 @@ def test_create_solution_approach_interactor_without_giving_solution_approach_id
     # Arrange
     question_id = 1
     solution_approach_storage = create_autospec(SolutionApproachStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreateSolutionApproachInteractor(
         solution_approach_storage=solution_approach_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     solution_approach_storage.create_solution_approach.return_value = \
         solution_approach_dto
     presenter.get_create_solution_approach_response.return_value = \
@@ -148,7 +146,7 @@ def test_create_solution_approach_interactor_without_giving_solution_approach_id
 
     # Assert
     assert response == solution_approach_with_question_id_dict
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     solution_approach_storage.is_valid_solution_approach_id.assert_not_called()
@@ -165,16 +163,16 @@ def test_create_solution_approach_interactor_by_giving_solution_approach_id_retu
     question_id = 1
     solution_approach_id = 1
     solution_approach_storage = create_autospec(SolutionApproachStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = CreateSolutionApproachInteractor(
         solution_approach_storage=solution_approach_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     solution_approach_storage.is_valid_solution_approach_id.return_value = True
     solution_approach_storage.is_solution_approach_belongs_to_question.return_value = True
     solution_approach_storage.create_solution_approach.return_value = \
@@ -190,7 +188,7 @@ def test_create_solution_approach_interactor_by_giving_solution_approach_id_retu
 
     # Assert
     assert response == solution_approach_with_question_id_dict
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     solution_approach_storage.update_solution_approach.assert_called_once_with(

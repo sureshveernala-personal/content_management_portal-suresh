@@ -23,7 +23,7 @@ def api_wrapper(*args, **kwargs):
         RoughSolutionStorageImplementation()
     presenter = PresenterImplementation()
     interactor = CreateRoughSolutionsInteractor(
-        problem_statement_storage=question_storage, presenter=presenter,
+        question_storage=question_storage, presenter=presenter,
         rough_solution_storage=rough_solution_storage
     )
     response = interactor.create_rough_solutions(

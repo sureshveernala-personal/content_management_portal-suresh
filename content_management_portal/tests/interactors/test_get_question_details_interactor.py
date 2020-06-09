@@ -2,7 +2,7 @@ from unittest.mock import create_autospec
 import pytest
 from django_swagger_utils.drf_server.exceptions import NotFound
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
 from content_management_portal.interactors.get_question_details_interactor \
@@ -12,15 +12,15 @@ from content_management_portal.interactors.get_question_details_interactor \
 def test_get_question_details_interactor_with_invalid_question_id():
     # Arrange
     question_id = 1
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = GetQuestionDetailsInteractor(
-        problem_statement_storage=problem_statement_storage,
+        question_storage=question_storage,
         presenter=presenter
     )
-    problem_statement_storage.is_valid_question_id.return_value = False
+    question_storage.is_valid_question_id.return_value = False
     presenter.raise_invalid_question_id_exception.side_effect = NotFound
 
     # Act
@@ -28,7 +28,7 @@ def test_get_question_details_interactor_with_invalid_question_id():
         interactor.get_question_details(question_id=question_id)
 
     # Assert
-    problem_statement_storage.get_question_details.assert_not_called()
+    question_storage.get_question_details.assert_not_called()
 
 
 def test_get_question_details_interactor_with_valid_details(
@@ -41,12 +41,12 @@ def test_get_question_details_interactor_with_valid_details(
     ):
     # Arrange
     question_id = 1
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = GetQuestionDetailsInteractor(
-        problem_statement_storage=problem_statement_storage,
+        question_storage=question_storage,
         presenter=presenter
     )
     expected_dict = {
@@ -60,7 +60,7 @@ def test_get_question_details_interactor_with_valid_details(
         "solution_approach": solution_approach_dict
     }
 
-    problem_statement_storage.get_question_details.return_value = \
+    question_storage.get_question_details.return_value = \
         question_dto, rough_solution_dtos_with_ids,\
         clean_solution_dtos_with_ids, [test_case_dto],\
         solution_approach_dto, [hint_dto],\
@@ -73,7 +73,7 @@ def test_get_question_details_interactor_with_valid_details(
     )
 
     # Assert
-    problem_statement_storage.get_question_details.assert_called_once_with(
+    question_storage.get_question_details.assert_called_once_with(
         question_id=question_id
     )
     presenter.get_question_details_response.assert_called_once_with(

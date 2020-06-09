@@ -19,11 +19,11 @@ def api_wrapper(*args, **kwargs):
     question_id = kwargs['question_id']
     test_case_storage = TestCaseStorageImplementation()
     presenter = PresenterImplementation()
-    problem_statement_storage = QuestionStorageImplementation()
+    question_storage = QuestionStorageImplementation()
     interactor = DeleteTestCaseInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
     response = interactor.delete_test_case(
         question_id=question_id, test_case_id=test_case_id

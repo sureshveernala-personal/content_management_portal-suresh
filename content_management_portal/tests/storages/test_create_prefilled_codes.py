@@ -1,7 +1,6 @@
 import pytest
 from content_management_portal.storages.prefilled_code_storage_implementation \
     import PrefilledCodeStorageImplementation
-from content_management_portal.dtos.dtos import PrefilledCodeDto
 from content_management_portal.constants.enums import CodeLanguage
 from content_management_portal.models import PrefilledCode
 

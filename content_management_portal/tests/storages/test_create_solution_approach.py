@@ -1,8 +1,6 @@
 import pytest
 from content_management_portal.storages.solution_approach_storage_implementation \
     import SolutionApproachStorageImplementation
-from content_management_portal.interactors.storages.dtos import \
-     SolutionApproachDto
 from content_management_portal.constants.enums import CodeLanguage
 from content_management_portal.models import SolutionApproach
 

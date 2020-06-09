@@ -11,6 +11,7 @@ def test_get_create_hint_response_returns_dict(
 
     # Act
     response = presenter.get_create_hint_response(
+        question_id=1,
         hint_with_question_id_dto=hint_with_question_id_dto
     )
 

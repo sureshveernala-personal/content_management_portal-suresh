@@ -14,15 +14,18 @@ class TestCaseStorageInterface(ABC):
         ) -> TestCaseWithQuestionIdDto:
         pass
 
+
     @abstractmethod
     def update_test_case(
             self, test_case_details: TestCaseDto
         ) -> TestCaseWithQuestionIdDto:
         pass
 
+
     @abstractmethod
     def is_valid_test_case_id(self, test_case_id: int) -> bool:
         pass
+
 
     @abstractmethod
     def is_test_case_belongs_to_question(
@@ -30,9 +33,18 @@ class TestCaseStorageInterface(ABC):
         ) -> bool:
         pass
 
+
     @abstractmethod
-    def delete_test_case(self, question_id: int, test_case_id: int):
+    def delete_test_case(self, question_id: int, test_case_id: int) -> int:
         pass
+
+
+    @abstractmethod
+    def decrease_test_case_numbers_followed_given_test_case_number(
+            self, question_id: int, test_case_number: int
+        ):
+        pass
+
 
     @abstractmethod
     def swap_test_cases(
@@ -40,10 +52,17 @@ class TestCaseStorageInterface(ABC):
         ):
         pass
 
+
     @abstractmethod
     def get_test_case_ids(self) -> List[int]:
         pass
 
+
     @abstractmethod
     def get_given_question_test_case_ids(self, question_id: int) -> List[int]:
+        pass
+
+
+    @abstractmethod
+    def get_max_test_case_number(self, question_id: int):
         pass

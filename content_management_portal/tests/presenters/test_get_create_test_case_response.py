@@ -11,6 +11,7 @@ def test_get_create_test_case_response_returns_dict(
 
     # Act
     response = presenter.get_create_test_case_response(
+        question_id=1,
         test_case_with_question_id_dto=test_case_with_question_id_dto
     )
 

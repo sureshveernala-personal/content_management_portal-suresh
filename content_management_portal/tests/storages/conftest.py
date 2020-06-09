@@ -4,12 +4,11 @@ from content_management_portal.models import User, Question, RoughSolution,\
 from content_management_portal.constants.enums import \
     DescriptionType, CodeLanguage
 from content_management_portal.interactors.storages.dtos import \
-    RoughSolutionsWithQuestionIdDto, RoughSolutionDto, DescriptionDto,\
+    RoughSolutionWithQuestionIdDto, RoughSolutionDto, DescriptionDto,\
     StatementDto, QuestionDto, TestCaseDto, TestCaseWithQuestionIdDto,\
-    PrefilledCodesWithQuestionIdDto, PrefilledCodeDto, CleanSolutionDto,\
-    CleanSolutionsWithQuestionIdDto, HintDto, HintWithQuestionIdDto,\
-    TestCasesSwapDetailsDto, TestCaseIdAndNumberDto, HintsSwapDetailsDto,\
-    HintIdAndNumberDto, SolutionApproachDto
+    PrefilledCodeWithQuestionIdDto, PrefilledCodeDto, CleanSolutionDto,\
+    CleanSolutionWithQuestionIdDto, HintDto, HintWithQuestionIdDto,\
+    TestCasesSwapDetailsDto, HintsSwapDetailsDto, SolutionApproachDto
 
 
 @pytest.fixture
@@ -254,9 +253,12 @@ def solution_approach(question):
 @pytest.fixture
 def rough_solutions_with_question_id_dtos(rough_solution_dtos):
     rough_solution_with_question_id_dtos = [
-        RoughSolutionsWithQuestionIdDto(
-            question_id=1,
-            rough_solutions=rough_solution_dtos[:1]
+        RoughSolutionWithQuestionIdDto(
+            language=CodeLanguage.python.value,
+            solution_content="content",
+            file_name="file_name",
+            rough_solution_id=1,
+            question_id=1
         )
     ]
     return rough_solution_with_question_id_dtos
@@ -329,7 +331,8 @@ def question_dto(description_dto):
     question_dto = QuestionDto(
         short_text="short_text1",
         question_id=1,
-        problem_description=description_dto
+        content="question1",
+        content_type=DescriptionType.text.value
     )
     return question_dto
 
@@ -339,7 +342,8 @@ def updated_question_dto(updated_description_dto):
     question_dto = QuestionDto(
         short_text="new_short_text1",
         question_id=1,
-        problem_description=updated_description_dto
+        content="new_question1",
+        content_type=DescriptionType.html.value
     )
     return question_dto
 
@@ -429,10 +433,15 @@ def test_case_dto_without_test_case_id():
 
 
 @pytest.fixture
-def test_case_with_question_id_dto(test_case_dto):
+def test_case_with_question_id_dto():
     test_case_with_question_id_dto = TestCaseWithQuestionIdDto(
         question_id=1,
-        test_case=test_case_dto
+        test_case_id=1,
+        input="input",
+        output="output",
+        score=0,
+        is_hidden=True,
+        test_case_number=1
     )
     return test_case_with_question_id_dto
 
@@ -440,7 +449,12 @@ def test_case_with_question_id_dto(test_case_dto):
 def updted_test_case_with_question_id_dto(updated_test_case_dto):
     test_case_with_question_id_dto = TestCaseWithQuestionIdDto(
         question_id=1,
-        test_case=updated_test_case_dto
+        test_case_id=1,
+        input="new_input",
+        output="new_output",
+        score=10,
+        is_hidden=False,
+        test_case_number=2
     )
     return test_case_with_question_id_dto
 
@@ -448,9 +462,11 @@ def updted_test_case_with_question_id_dto(updated_test_case_dto):
 @pytest.fixture
 def prefilled_codes(prefilled_code_dtos):
     prefilled_code_with_question_id_dtos = [
-        PrefilledCodesWithQuestionIdDto(
+        PrefilledCodeWithQuestionIdDto(
             question_id=1,
-            prefilled_codes=prefilled_code_dtos[:1]
+            language=CodeLanguage.python.value,
+            solution_content="content", file_name="file_name",
+            prefilled_code_id=1
         )
     ]
     return prefilled_code_with_question_id_dtos
@@ -487,9 +503,12 @@ def updated_prefilled_code_dtos():
 @pytest.fixture
 def prefilled_codes_with_question_id_dtos(prefilled_code_dtos):
     prefilled_codes_with_question_id_dtos = [
-        PrefilledCodesWithQuestionIdDto(
+        PrefilledCodeWithQuestionIdDto(
             question_id=1,
-            prefilled_codes=prefilled_code_dtos[:1]
+            language=CodeLanguage.python.value,
+            solution_content="content",
+            file_name="file_name",
+            prefilled_code_id=1
         )
     ]
     return prefilled_codes_with_question_id_dtos
@@ -497,9 +516,12 @@ def prefilled_codes_with_question_id_dtos(prefilled_code_dtos):
 @pytest.fixture
 def clean_solutions(clean_solution_dtos):
     clean_solution_with_question_id_dtos = [
-        CleanSolutionsWithQuestionIdDto(
+        CleanSolutionWithQuestionIdDto(
             question_id=1,
-            clean_solutions=clean_solution_dtos[:1]
+            language=CodeLanguage.python.value,
+            solution_content="content",
+            file_name="file_name",
+            clean_solution_id=1
         )
     ]
     return clean_solution_with_question_id_dtos
@@ -537,9 +559,12 @@ def updated_clean_solution_dtos():
 @pytest.fixture
 def clean_solutions_with_question_id_dtos(clean_solution_dtos):
     clean_solutions_with_question_id_dtos = [
-        CleanSolutionsWithQuestionIdDto(
+        CleanSolutionWithQuestionIdDto(
             question_id=1,
-            clean_solutions=clean_solution_dtos[:1]
+            language=CodeLanguage.python.value,
+            solution_content="content",
+            file_name="file_name",
+            clean_solution_id=1
         )
     ]
     return clean_solutions_with_question_id_dtos
@@ -568,7 +593,8 @@ def hint_dto(hint_description_dto):
     hint_dto = HintDto(
         hint_id=1,
         title="title",
-        description=hint_description_dto,
+        content="content",
+        content_type=DescriptionType.html.value,
         hint_number=1
     )
     return hint_dto
@@ -579,19 +605,22 @@ def hint_dtos(hint_description_dto):
         HintDto(
             hint_id=1,
             title="title",
-            description=hint_description_dto,
+            content="content",
+            content_type=DescriptionType.html.value,
             hint_number=1
         ),
         HintDto(
             hint_id=2,
             title="title",
-            description=hint_description_dto,
+            content="content",
+            content_type=DescriptionType.html.value,
             hint_number=2
         ),
         HintDto(
             hint_id=3,
             title="title",
-            description=hint_description_dto,
+            content="content",
+            content_type=DescriptionType.html.value,
             hint_number=3
         )
     ]
@@ -603,9 +632,8 @@ def updated_hint_dto():
     hint_dto = HintDto(
         hint_id=1,
         title="title",
-        description=DescriptionDto(
-            content="new_content", content_type=DescriptionType.html.value
-        ),
+        content="new_content",
+        content_type=DescriptionType.html.value,
         hint_number=2
     )
     return hint_dto
@@ -616,7 +644,8 @@ def hint_dto_without_hint_id(hint_description_dto):
     hint_dto = HintDto(
         hint_id=None,
         title="title",
-        description=hint_description_dto,
+        content="content",
+        content_type=DescriptionType.html.value,
         hint_number=1
     )
     return hint_dto
@@ -626,7 +655,11 @@ def hint_dto_without_hint_id(hint_description_dto):
 def hint_with_question_id_dto(hint_dto):
     hint_with_question_id_dto = HintWithQuestionIdDto(
         question_id=1,
-        hint=hint_dto
+        hint_id=1,
+        title="title",
+        content="content",
+        content_type=DescriptionType.html.value,
+        hint_number=1
     )
     return hint_with_question_id_dto
 
@@ -634,7 +667,11 @@ def hint_with_question_id_dto(hint_dto):
 def updted_hint_with_question_id_dto(updated_hint_dto):
     hint_with_question_id_dto = HintWithQuestionIdDto(
         question_id=1,
-        hint=updated_hint_dto
+        hint_id=1,
+        title="title",
+        content="new_content",
+        content_type=DescriptionType.html.value,
+        hint_number=2
     )
     return hint_with_question_id_dto
 
@@ -642,14 +679,10 @@ def updted_hint_with_question_id_dto(updated_hint_dto):
 @pytest.fixture
 def test_cases_swap_details_dto():
     test_cases_swap_details_dto = TestCasesSwapDetailsDto(
-        first_test_case=TestCaseIdAndNumberDto(
-            test_case_id=1,
-            test_case_number=2
-        ),
-        second_test_case=TestCaseIdAndNumberDto(
-            test_case_id=2,
-            test_case_number=1
-        )
+        first_test_case_id=1,
+        first_test_case_number=2,
+        second_test_case_id=2,
+        second_test_case_number=1
     )
     return test_cases_swap_details_dto
 
@@ -657,14 +690,10 @@ def test_cases_swap_details_dto():
 @pytest.fixture
 def hints_swap_details_dto():
     hints_swap_details_dto = HintsSwapDetailsDto(
-        first_hint=HintIdAndNumberDto(
-            hint_id=1,
-            hint_number=2
-        ),
-        second_hint=HintIdAndNumberDto(
-            hint_id=2,
-            hint_number=1
-        )
+        first_hint_id=1,
+        first_hint_number=2,
+        second_hint_id=2,
+        second_hint_number=1
     )
     return hints_swap_details_dto
 

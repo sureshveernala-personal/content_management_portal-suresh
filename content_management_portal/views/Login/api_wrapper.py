@@ -25,5 +25,6 @@ def api_wrapper(*args, **kwargs):
         oauth2_storage=oauth2_storage
     )
     response = interactor.login(username=username, password=password)
+
     json_response = json.dumps(response)
     return HttpResponse(json_response, status=201)

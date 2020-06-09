@@ -277,6 +277,7 @@ def manual_test_flow_of_operations():
     ).content
 
     print("updated clean solutions:", clean_solutions_with_question_id )
+    print()
     #delete clean solution
     # data = '[{"language":"C","solution_content":"string","file_name":"string","rough_solution_id": null}]'
     # data = json.dumps(data)
@@ -434,6 +435,7 @@ def manual_test_flow_of_operations():
         data=data
     ).content
     print("create hint:", hint_with_question_id )
+    print()
     hint = json.loads(hint_with_question_id)
     hint_id  = hint['hint']['hint_id']
 
@@ -458,7 +460,7 @@ def manual_test_flow_of_operations():
         data=data
     ).content
 
-    print("updated prefilled codes:", hint_with_question_id )
+    print("updated hints:", hint_with_question_id )
     print()
 
 
@@ -593,7 +595,7 @@ def manual_test_flow_of_operations():
         },
         data=data
     ).content
-    print("delete prefilled code:", clean_solutions_with_question_id )
+    print("delete clean solution:", clean_solutions_with_question_id )
     print()
 
     # delete test case
@@ -640,9 +642,9 @@ def manual_test_flow_of_operations():
     assert len(questions_list) == 1
     print("home_page all False except solution approach:", json.loads(questions))
     print()
-    
-    
-    #for swapping
+
+
+        #for swapping
 
     #create hint
     data = {
@@ -689,7 +691,7 @@ def manual_test_flow_of_operations():
     print("create hint:", hint_with_question_id )
     hint = json.loads(hint_with_question_id)
     second_hint_id  = hint['hint']['hint_id']
-    
+
     #create test case
     data = {
         "test_case_number": 1,
@@ -712,7 +714,7 @@ def manual_test_flow_of_operations():
     print()
     test_case = json.loads(test_case_with_question_id)
     first_test_case_id  = test_case['test_case']['test_case_id']
-    
+
     #create test case
     data = {
         "test_case_number": 2,
@@ -735,10 +737,10 @@ def manual_test_flow_of_operations():
     print()
     test_case = json.loads(test_case_with_question_id)
     second_test_case_id  = test_case['test_case']['test_case_id']
-    
-    
-    
-    
+
+
+
+
     question_details = requests.get(
         url=f'http://localhost:8080/api/content_management_portal/coding_questions/{question_id}/v1/',
         headers={
@@ -749,7 +751,7 @@ def manual_test_flow_of_operations():
     assert question_details.status_code == 200
     print("before swapping question_details:", json.loads(question_details.content))
     print()
-    
+
     #swap hint
     data = {
         "first_hint": {
@@ -770,7 +772,7 @@ def manual_test_flow_of_operations():
         },
         data=data
     )
-    
+
     #swap test case
     data = {
           "first_test_case": {
@@ -791,7 +793,7 @@ def manual_test_flow_of_operations():
         },
         data=data
     )
-    
+
     question_details = requests.get(
         url=f'http://localhost:8080/api/content_management_portal/coding_questions/{question_id}/v1/',
         headers={

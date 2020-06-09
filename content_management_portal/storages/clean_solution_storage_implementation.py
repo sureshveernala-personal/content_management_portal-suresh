@@ -1,7 +1,7 @@
 from typing import List
 from content_management_portal.dtos.dtos import CleanSolutionDto
 from content_management_portal.interactors.storages.dtos import \
-    CleanSolutionsWithQuestionIdDto
+    CleanSolutionWithQuestionIdDto
 from content_management_portal.interactors.storages.\
     clean_solution_storage_interface import CleanSolutionStorageInterface
 from content_management_portal.models import CleanSolution
@@ -13,6 +13,7 @@ class CleanSolutionStorageImplementation(CleanSolutionStorageInterface):
         is_valid = CleanSolution.objects.filter(id=clean_solution_id).exists()
         return is_valid
 
+
     def is_clean_solution_belongs_to_question(
             self, question_id: int, clean_solution_id: int
         ):
@@ -21,16 +22,19 @@ class CleanSolutionStorageImplementation(CleanSolutionStorageInterface):
         ).exists()
         return is_valid
 
+
     def get_clean_solution_ids(self):
         clean_solution_ids = CleanSolution.objects.all()\
                                           .values_list('id', flat=True)
         return list(clean_solution_ids)
+
 
     def get_question_clean_solution_ids(self, question_id: int):
         clean_solution_ids = CleanSolution.objects.filter(
             question_id=question_id
         ).values_list('id', flat=True)
         return list(clean_solution_ids)
+
 
     def create_clean_solutions(
             self,
@@ -48,6 +52,7 @@ class CleanSolutionStorageImplementation(CleanSolutionStorageInterface):
         ]
         CleanSolution.objects.bulk_create(clean_solution_objs)
         return
+
 
     def update_clean_solutions(
             self,
@@ -73,32 +78,32 @@ class CleanSolutionStorageImplementation(CleanSolutionStorageInterface):
         )
         return
 
+
     def delete_clean_solution(self, clean_solution_id: int):
         CleanSolution.objects.get(id=clean_solution_id).delete()
         return
 
+
     @staticmethod
     def _convert_clean_solution_into_dto(clean_solution):
-        clean_solution_dto = CleanSolutionDto(
+        clean_solution_dto = CleanSolutionWithQuestionIdDto(
             language=clean_solution.language,
             solution_content=clean_solution.solution_content,
             file_name=clean_solution.file_name,
-            clean_solution_id=clean_solution.id
+            clean_solution_id=clean_solution.id,
+            question_id=clean_solution.question_id,
         )
         return clean_solution_dto
 
+
     def get_clean_solutions(
             self, question_id: int
-        ) -> CleanSolutionsWithQuestionIdDto:
+        ) -> CleanSolutionWithQuestionIdDto:
         clean_solutions = CleanSolution.objects.filter(question_id=question_id)
-        clean_solution_dtos = [
+        clean_solution_with_question_id_dto = [
             self._convert_clean_solution_into_dto(
                 clean_solution=clean_solution
             )
             for clean_solution in clean_solutions
         ]
-        clean_solution_with_question_id_dto = CleanSolutionsWithQuestionIdDto(
-            question_id=question_id,
-            clean_solutions=clean_solution_dtos
-        )
         return clean_solution_with_question_id_dto

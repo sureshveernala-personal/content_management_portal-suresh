@@ -12,15 +12,18 @@ class SolutionApproachStorageInterface(ABC):
         ) -> int:
         pass
 
+
     @abstractmethod
     def update_solution_approach(
             self, solution_approach_details: SolutionApproachDto
         ) -> int:
         pass
 
+
     @abstractmethod
     def is_valid_solution_approach_id(self, solution_approach_id: int):
         pass
+
 
     @abstractmethod
     def is_solution_approach_belongs_to_question(

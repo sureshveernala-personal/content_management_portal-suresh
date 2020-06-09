@@ -1,7 +1,6 @@
 import pytest
 from content_management_portal.storages.rough_solution_storage_implementation \
     import RoughSolutionStorageImplementation
-from content_management_portal.dtos.dtos import RoughSolutionDto
 from content_management_portal.constants.enums import CodeLanguage
 from content_management_portal.models import RoughSolution
 

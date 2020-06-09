@@ -20,11 +20,11 @@ def api_wrapper(*args, **kwargs):
     question_id = kwargs['question_id']
     solution_approach_storage = SolutionApproachStorageImplementation()
     presenter = PresenterImplementation()
-    problem_statement_storage = QuestionStorageImplementation()
+    question_storage = QuestionStorageImplementation()
     interactor = CreateSolutionApproachInteractor(
         solution_approach_storage=solution_approach_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
     response = interactor.create_solution_approach(
         question_id=question_id,

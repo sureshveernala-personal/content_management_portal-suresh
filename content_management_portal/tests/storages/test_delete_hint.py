@@ -18,12 +18,3 @@ def test_delete_hint(hint):
 
     # Assert
     assert Hint.objects.filter(id=hint_id).exists() == False
-    assert _check_all_hint_numbers_are_decreased(question_id=question_id)
-
-def _check_all_hint_numbers_are_decreased(question_id: int):
-    hints = Hint.objects.filter(question_id=question_id)
-    expected_hint_number = 1
-    for hint in hints:
-        assert hint.hint_number == expected_hint_number
-        expected_hint_number += 1
-    return True

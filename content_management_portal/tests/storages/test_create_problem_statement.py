@@ -1,11 +1,8 @@
 from content_management_portal.storages.question_storage_implementation import\
     QuestionStorageImplementation
 from content_management_portal.models import Question
-# from content_management_portal.dtos.dtos import DescriptionDto
 from content_management_portal.constants.enums import DescriptionType
 import pytest
-from content_management_portal.interactors.storages.dtos import QuestionDto,\
-    DescriptionDto
 
 
 @pytest.mark.django_db

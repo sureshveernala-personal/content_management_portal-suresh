@@ -7,7 +7,7 @@ from content_management_portal.interactors.delete_prefilled_code_interactor\
 from content_management_portal.interactors.presenters.\
     presenter_interface import PresenterInterface
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 from django_swagger_utils.drf_server.exceptions import NotFound, BadRequest
 
 
@@ -16,16 +16,16 @@ def test_delete_prefilled_code_interactor_with_invalid_question_id_raises_error(
     prefilled_code_id = 1
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeletePrefilledCodeInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = False
+    question_storage.is_valid_question_id.return_value = False
     prefilled_code_storage.is_valid_prefilled_code_id.return_value = True
     prefilled_code_storage.\
         is_prefilled_code_belongs_to_question.return_value = True
@@ -39,7 +39,7 @@ def test_delete_prefilled_code_interactor_with_invalid_question_id_raises_error(
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     prefilled_code_storage.delete_prefilled_code.assert_not_called()
@@ -50,16 +50,16 @@ def test_delete_prefilled_code_interactor_with_invalid_prefilled_code_id_raises_
     prefilled_code_id = 1
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeletePrefilledCodeInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.is_valid_prefilled_code_id.return_value = False
     prefilled_code_storage.\
         is_prefilled_code_belongs_to_question.return_value = True
@@ -84,16 +84,16 @@ def test_delete_prefilled_code_interactor_with_prefilled_code_not_belong_to_ques
     prefilled_code_id = 1
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeletePrefilledCodeInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.is_valid_prefilled_code_id.return_value = True
     prefilled_code_storage.\
         is_prefilled_code_belongs_to_question.return_value = False
@@ -119,16 +119,16 @@ def test_delete_prefilled_code_interactor_with_valid_details():
     prefilled_code_id = 1
     question_id = 1
     prefilled_code_storage = create_autospec(PrefilledCodeStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeletePrefilledCodeInteractor(
         prefilled_code_storage=prefilled_code_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     prefilled_code_storage.is_valid_prefilled_code_id.return_value = True
     prefilled_code_storage.\
         is_prefilled_code_belongs_to_question.return_value = True

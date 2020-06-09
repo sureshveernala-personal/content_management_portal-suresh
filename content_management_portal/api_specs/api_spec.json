@@ -711,6 +711,21 @@
                 "question_id",
                 "solution_approach"
             ]
+        },
+        "CodingQuestionIds": {
+            "type": "object",
+            "properties": {
+                "question_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "required": [
+                "question_ids"
+            ]
         }
     },
     "parameters": {
@@ -841,6 +856,14 @@
             "schema": {
                 "$ref": "#/definitions/CodingQuestionSolutionApproachParameterData"
             }
+        },
+        "DeleteCodingQuestionsParameter": {
+            "name": "delete_coding_questions",
+            "in": "body",
+            "description": "data required to delete coding questions",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionIds"
+            }
         }
     },
     "responses": {
@@ -903,6 +926,9 @@
             "schema": {
                 "$ref": "#/definitions/CodingQuestionSolutionApproachResponseData"
             }
+        },
+        "DeleteCodingQuestionsResponse": {
+            "description": "Deleted coding questions"
         },
         "InvalidUserResponse": {
             "description": "User not in the data."
@@ -1039,6 +1065,24 @@
                 "responses": {
                     "200": {
                         "$ref": "#/responses/CodingQuestionsDetailsResponse"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "delete_coding_questions",
+                "summary": "Delete selected questions",
+                "description": "Delete all selected questions from the database",
+                "security": [{
+                    "oauth": [
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/DeleteCodingQuestionsParameter"
+                }],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/DeleteCodingQuestionsResponse"
                     }
                 }
             }

@@ -21,7 +21,7 @@ def api_wrapper(*args, **kwargs):
     question_storage = QuestionStorageImplementation()
     presenter = PresenterImplementation()
     interactor = CreateProblemStatementInteractor(
-        problem_statement_storage=question_storage, presenter=presenter
+        question_storage=question_storage, presenter=presenter
     )
     response = interactor.create_problem_statement(
         user_id=user.id,

@@ -23,7 +23,7 @@ def api_wrapper(*args, **kwargs):
         CleanSolutionStorageImplementation()
     presenter = PresenterImplementation()
     interactor = DeleteCleanSolutionInteractor(
-        problem_statement_storage=question_storage, presenter=presenter,
+        question_storage=question_storage, presenter=presenter,
         clean_solution_storage=clean_solution_storage
     )
     response = interactor.delete_clean_solution(

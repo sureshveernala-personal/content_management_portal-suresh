@@ -20,11 +20,11 @@ def api_wrapper(*args, **kwargs):
     question_id = kwargs['question_id']
     hint_storage = HintStorageImplementation()
     presenter = PresenterImplementation()
-    problem_statement_storage = QuestionStorageImplementation()
+    question_storage = QuestionStorageImplementation()
     interactor = CreateHintInteractor(
         hint_storage=hint_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
     response = interactor.create_hint(
         question_id=question_id, hint_details=hint_details

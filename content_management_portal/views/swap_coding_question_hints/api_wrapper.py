@@ -19,11 +19,11 @@ def api_wrapper(*args, **kwargs):
     hints_swap_details =kwargs['request_data']
     hint_storage = HintStorageImplementation()
     presenter = PresenterImplementation()
-    problem_statement_storage = QuestionStorageImplementation()
+    question_storage = QuestionStorageImplementation()
     interactor = SwapHintsInteractor(
         hint_storage=hint_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
     response = interactor.swap_hints(
         question_id=question_id,

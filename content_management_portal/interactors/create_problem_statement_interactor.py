@@ -1,18 +1,20 @@
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
 from typing import Dict, Optional
 from content_management_portal.dtos.dtos import DescriptionDto
 
+
 class CreateProblemStatementInteractor:
     def __init__(
             self,
-            problem_statement_storage: ProblemStatementStorageInterface,
+            question_storage: QuestionStorageInterface,
             presenter: PresenterInterface
         ):
-        self.problem_statement_storage = problem_statement_storage
+        self.question_storage = question_storage
         self.presenter = presenter
+
 
     def create_problem_statement(
             self,
@@ -28,7 +30,7 @@ class CreateProblemStatementInteractor:
         is_update = question_id is not None
         if is_update:
             question_dto = \
-                self._update_question(
+                self._update_problem_statement(
                     user_id=user_id,
                     short_text=short_text,
                     description=description_dto,
@@ -36,7 +38,7 @@ class CreateProblemStatementInteractor:
                 )
         else:
             question_dto =\
-            self.problem_statement_storage.create_problem_statement(
+            self.question_storage.create_problem_statement(
                 user_id=user_id,
                 short_text=short_text,
                 description=description_dto
@@ -47,7 +49,8 @@ class CreateProblemStatementInteractor:
         )
         return question_dict
 
-    def _update_question(
+
+    def _update_problem_statement(
             self,
             user_id: int,
             short_text: str,
@@ -55,12 +58,12 @@ class CreateProblemStatementInteractor:
             question_id: int
         ):
         is_question_exists = \
-        self.problem_statement_storage.is_valid_question_id(
+        self.question_storage.is_valid_question_id(
             question_id=question_id
         )
         if is_question_exists:
             new_question_id = \
-            self.problem_statement_storage.update_problem_statement(
+            self.question_storage.update_problem_statement(
                 user_id=user_id,
                 short_text=short_text,
                 description=description,

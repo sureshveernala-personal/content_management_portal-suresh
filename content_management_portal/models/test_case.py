@@ -12,3 +12,4 @@ class TestCase(models.Model):
     output = models.TextField()
     score = models.IntegerField()
     is_hidden = models.BooleanField()
+    created_at = models.DateTimeField(auto_now=True)

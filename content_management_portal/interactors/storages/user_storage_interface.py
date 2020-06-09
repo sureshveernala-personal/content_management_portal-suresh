@@ -8,6 +8,7 @@ class UserStorageInterface(ABC):
     def is_valid_username(self, username: str):
         pass
 
+
     @abstractmethod
     def validate_password(self, username: str, password: str):
         pass

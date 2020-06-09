@@ -23,8 +23,7 @@ def test_update_hint_return_question_dto(
     assert response_dto == expected_dto
     assert Hint.objects.filter(id=1).exists()
     hint = Hint.objects.get(id=1)
-    hint_dto = expected_dto.hint
-    assert hint.hint_number == hint_dto.hint_number
-    assert hint.content == hint_dto.description.content
-    assert hint.content_type == hint_dto.description.content_type
-    assert hint.title == hint_dto.title
+    assert hint.hint_number == expected_dto.hint_number
+    assert hint.content == expected_dto.content
+    assert hint.content_type == expected_dto.content_type
+    assert hint.title == expected_dto.title

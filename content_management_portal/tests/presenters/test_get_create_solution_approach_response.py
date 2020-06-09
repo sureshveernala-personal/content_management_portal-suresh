@@ -1,8 +1,6 @@
 import pytest
 from content_management_portal.presenters.presenter_implementation import\
     PresenterImplementation
-from content_management_portal.interactors.storages.dtos import \
-    SolutionApproachDto
 
 
 

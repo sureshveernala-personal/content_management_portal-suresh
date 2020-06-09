@@ -21,3 +21,4 @@ class SolutionApproach(models.Model):
     complexity_analysis_content_type = models.CharField(
         max_length=100, choices=choices
     )
+    created_at = models.DateTimeField(auto_now=True)

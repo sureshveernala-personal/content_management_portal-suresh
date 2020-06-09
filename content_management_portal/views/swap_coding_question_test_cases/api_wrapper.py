@@ -19,11 +19,11 @@ def api_wrapper(*args, **kwargs):
     test_cases_swap_details =kwargs['request_data']
     test_case_storage = TestCaseStorageImplementation()
     presenter = PresenterImplementation()
-    problem_statement_storage = QuestionStorageImplementation()
+    question_storage = QuestionStorageImplementation()
     interactor = SwapTestCasesInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
     response = interactor.swap_test_cases(
         question_id=question_id,

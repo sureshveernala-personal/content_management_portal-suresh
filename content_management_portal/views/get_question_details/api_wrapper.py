@@ -18,7 +18,7 @@ def api_wrapper(*args, **kwargs):
     question_storage = QuestionStorageImplementation()
     presenter = PresenterImplementation()
     interactor = GetQuestionDetailsInteractor(
-        problem_statement_storage=question_storage, presenter=presenter
+        question_storage=question_storage, presenter=presenter
     )
     response = interactor.get_question_details(question_id=question_id)
     json_response = json.dumps(response)

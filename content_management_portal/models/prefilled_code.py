@@ -14,3 +14,4 @@ class PrefilledCode(models.Model):
     language = models.CharField(max_length=100, choices=choices)
     solution_content = models.TextField()
     file_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now=True)

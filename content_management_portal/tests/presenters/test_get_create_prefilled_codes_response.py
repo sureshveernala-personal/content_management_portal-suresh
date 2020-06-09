@@ -1,16 +1,12 @@
 import pytest
 from content_management_portal.presenters.presenter_implementation import\
     PresenterImplementation
-from content_management_portal.interactors.storages.dtos import \
-    PrefilledCodesWithQuestionIdDto
 
 
 def test_get_create_prefilled_codes_response_when_no_prefilled_codes_returns_empty_list():
     # Arrange
     presenter = PresenterImplementation()
-    prefilled_code_dtos = PrefilledCodesWithQuestionIdDto(
-        question_id=1,prefilled_codes=[]
-    )
+    prefilled_code_dtos = []
     excepted_response = {
         "question_id":1,
         "prefilled_codes": []
@@ -18,8 +14,9 @@ def test_get_create_prefilled_codes_response_when_no_prefilled_codes_returns_emp
 
     # Act
     response = presenter.get_create_prefilled_codes_response(
-        prefilled_codes_dto_with_question_id\
-        =prefilled_code_dtos
+        question_id=1,
+        prefilled_code_with_question_id_dtos=\
+            prefilled_code_dtos
     )
 
     # Assert
@@ -34,7 +31,8 @@ def test_get_create_prefilled_codes_response_when_prefilled_codes_given_returns_
 
     # Act
     response = presenter.get_create_prefilled_codes_response(
-        prefilled_codes_dto_with_question_id=\
+        question_id=1,
+        prefilled_code_with_question_id_dtos=\
         prefilled_code_with_question_id_dtos
     )
 

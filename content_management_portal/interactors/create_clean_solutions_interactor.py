@@ -1,8 +1,7 @@
 from content_management_portal.interactors.storages.\
     clean_solution_storage_interface import CleanSolutionStorageInterface
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
-
+    question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
 from typing import Dict, List
@@ -13,21 +12,23 @@ class CreateCleanSolutionsInteractor:
     def __init__(
             self,
             clean_solution_storage: CleanSolutionStorageInterface,
-            problem_statement_storage: ProblemStatementStorageInterface,
+            question_storage: QuestionStorageInterface,
             presenter: PresenterInterface
         ):
         self.clean_solution_storage = clean_solution_storage
         self.presenter = presenter
-        self.problem_statement_storage = problem_statement_storage
+        self.question_storage = question_storage
+
 
     def create_clean_solutions(
             self, question_id: str, clean_solutions: List[Dict]
         ):
-        is_invalid_question_id = not self.problem_statement_storage.\
+        is_invalid_question_id = not self.question_storage.\
             is_valid_question_id(question_id=question_id)
         if is_invalid_question_id:
             self.presenter.raise_invalid_question_id_exception()
             return
+
         clean_solution_dtos_list = self._get_clean_solutions_dtos_list(
             clean_solutions
         )
@@ -42,7 +43,8 @@ class CreateCleanSolutionsInteractor:
         new_clean_solution_dtos = self.clean_solution_storage.\
             get_clean_solutions(question_id=question_id)
         question_id_dict = self.presenter.get_create_clean_solutions_response(
-            clean_solutions_dto_with_question_id=new_clean_solution_dtos
+            clean_solution_with_question_id_dtos=new_clean_solution_dtos,
+            question_id=question_id
         )
         return question_id_dict
 
@@ -70,6 +72,7 @@ class CreateCleanSolutionsInteractor:
         if is_invalid_clean_solution_id:
             self.presenter.raise_invalid_clean_solution_id_exception()
             return
+
         is_not_questions_clean_solution_id = clean_solution_id not in\
             question_clean_solutions
         if is_not_questions_clean_solution_id:
@@ -94,7 +97,8 @@ class CreateCleanSolutionsInteractor:
             clean_solution_dtos=have_to_create_clean_solutions_list
         )
         return
-    
+
+
     def _update_clean_solutions(
             self, clean_solution_dtos_list: List[CleanSolutionDto],
             question_id: int
@@ -108,7 +112,7 @@ class CreateCleanSolutionsInteractor:
                     clean_solution_dto.clean_solution_id
                 )
                 have_to_update_clean_solutions_list.append(clean_solution_dto)
-        print(have_to_update_clean_solution_ids_list)
+
         total_clean_solutions = \
             self.clean_solution_storage.get_clean_solution_ids()
         question_clean_solutions = \

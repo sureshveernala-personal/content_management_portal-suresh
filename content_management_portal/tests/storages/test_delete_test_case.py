@@ -18,12 +18,4 @@ def test_delete_test_case(test_case):
 
     # Assert
     assert TestCase.objects.filter(id=test_case_id).exists() == False
-    assert _check_all_test_case_numbers_are_decreased(question_id=question_id)
 
-def _check_all_test_case_numbers_are_decreased(question_id: int):
-    test_cases = TestCase.objects.filter(question_id=question_id)
-    expected_test_case_number = 1
-    for test_case in test_cases:
-        assert test_case.test_case_number == expected_test_case_number
-        expected_test_case_number += 1
-    return True

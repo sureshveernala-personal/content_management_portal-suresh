@@ -1,7 +1,6 @@
 import pytest
 from content_management_portal.storages.clean_solution_storage_implementation \
     import CleanSolutionStorageImplementation
-from content_management_portal.dtos.dtos import CleanSolutionDto
 from content_management_portal.constants.enums import CodeLanguage
 from content_management_portal.models import CleanSolution
 

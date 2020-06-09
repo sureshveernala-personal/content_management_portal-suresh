@@ -1,7 +1,7 @@
 from content_management_portal.interactors.storages.\
     prefilled_code_storage_interface import PrefilledCodeStorageInterface
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 
 from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
@@ -13,17 +13,17 @@ class CreatePrefilledCodesInteractor:
     def __init__(
             self,
             prefilled_code_storage: PrefilledCodeStorageInterface,
-            problem_statement_storage: ProblemStatementStorageInterface,
+            question_storage: QuestionStorageInterface,
             presenter: PresenterInterface
         ):
         self.prefilled_code_storage = prefilled_code_storage
         self.presenter = presenter
-        self.problem_statement_storage = problem_statement_storage
+        self.question_storage = question_storage
 
     def create_prefilled_codes(
             self, question_id: str, prefilled_codes: List[Dict]
         ):
-        is_invalid_question_id = not self.problem_statement_storage.\
+        is_invalid_question_id = not self.question_storage.\
             is_valid_question_id(question_id=question_id)
         if is_invalid_question_id:
             self.presenter.raise_invalid_question_id_exception()
@@ -42,7 +42,8 @@ class CreatePrefilledCodesInteractor:
         new_prefilled_code_dtos = self.prefilled_code_storage.\
             get_prefilled_codes(question_id=question_id)
         question_id_dict = self.presenter.get_create_prefilled_codes_response(
-            prefilled_codes_dto_with_question_id=new_prefilled_code_dtos
+            prefilled_code_with_question_id_dtos=new_prefilled_code_dtos,
+            question_id=question_id
         )
         return question_id_dict
 
@@ -70,6 +71,7 @@ class CreatePrefilledCodesInteractor:
         if is_invalid_prefilled_code_id:
             self.presenter.raise_invalid_prefilled_code_id_exception()
             return
+
         is_not_questions_prefilled_code_id = prefilled_code_id not in\
             question_prefilled_codes
         if is_not_questions_prefilled_code_id:
@@ -94,7 +96,8 @@ class CreatePrefilledCodesInteractor:
             prefilled_code_dtos=have_to_create_prefilled_codes_list
         )
         return
-    
+
+
     def _update_prefilled_codes(
             self, prefilled_code_dtos_list: List[PrefilledCodeDto],
             question_id: int
@@ -108,7 +111,7 @@ class CreatePrefilledCodesInteractor:
                     prefilled_code_dto.prefilled_code_id
                 )
                 have_to_update_prefilled_codes_list.append(prefilled_code_dto)
-        print(have_to_update_prefilled_code_ids_list)
+
         total_prefilled_codes = \
             self.prefilled_code_storage.get_prefilled_code_ids()
         question_prefilled_codes = \

@@ -14,3 +14,4 @@ class Question(models.Model):
         for description in DescriptionType
     ]
     content_type = models.CharField(max_length=100, choices=choices)
+    created_at = models.DateTimeField(auto_now=True)

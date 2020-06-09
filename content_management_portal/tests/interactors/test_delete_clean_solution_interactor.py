@@ -7,7 +7,7 @@ from content_management_portal.interactors.delete_clean_solution_interactor\
 from content_management_portal.interactors.presenters.\
     presenter_interface import PresenterInterface
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 from django_swagger_utils.drf_server.exceptions import NotFound, BadRequest
 
 
@@ -16,16 +16,16 @@ def test_delete_clean_solution_interactor_with_invalid_question_id_raises_error(
     clean_solution_id = 1
     question_id = 1
     clean_solution_storage = create_autospec(CleanSolutionStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeleteCleanSolutionInteractor(
         clean_solution_storage=clean_solution_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = False
+    question_storage.is_valid_question_id.return_value = False
     clean_solution_storage.is_valid_clean_solution_id.return_value = True
     clean_solution_storage.\
         is_clean_solution_belongs_to_question.return_value = True
@@ -39,7 +39,7 @@ def test_delete_clean_solution_interactor_with_invalid_question_id_raises_error(
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     clean_solution_storage.delete_clean_solution.assert_not_called()
@@ -50,16 +50,16 @@ def test_delete_clean_solution_interactor_with_invalid_clean_solution_id_raises_
     clean_solution_id = 1
     question_id = 1
     clean_solution_storage = create_autospec(CleanSolutionStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeleteCleanSolutionInteractor(
         clean_solution_storage=clean_solution_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     clean_solution_storage.is_valid_clean_solution_id.return_value = False
     clean_solution_storage.\
         is_clean_solution_belongs_to_question.return_value = True
@@ -84,16 +84,16 @@ def test_delete_clean_solution_interactor_with_clean_solution_not_belong_to_ques
     clean_solution_id = 1
     question_id = 1
     clean_solution_storage = create_autospec(CleanSolutionStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeleteCleanSolutionInteractor(
         clean_solution_storage=clean_solution_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     clean_solution_storage.is_valid_clean_solution_id.return_value = True
     clean_solution_storage.\
         is_clean_solution_belongs_to_question.return_value = False
@@ -119,16 +119,16 @@ def test_delete_clean_solution_interactor_with_valid_details():
     clean_solution_id = 1
     question_id = 1
     clean_solution_storage = create_autospec(CleanSolutionStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = DeleteCleanSolutionInteractor(
         clean_solution_storage=clean_solution_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     clean_solution_storage.is_valid_clean_solution_id.return_value = True
     clean_solution_storage.\
         is_clean_solution_belongs_to_question.return_value = True

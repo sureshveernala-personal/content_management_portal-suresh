@@ -23,7 +23,7 @@ def api_wrapper(*args, **kwargs):
         PrefilledCodeStorageImplementation()
     presenter = PresenterImplementation()
     interactor = CreatePrefilledCodesInteractor(
-        problem_statement_storage=question_storage, presenter=presenter,
+        question_storage=question_storage, presenter=presenter,
         prefilled_code_storage=prefilled_code_storage
     )
     response = interactor.create_prefilled_codes(

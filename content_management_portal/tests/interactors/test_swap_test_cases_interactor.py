@@ -4,7 +4,7 @@ from django_swagger_utils.drf_server.exceptions import NotFound, BadRequest
 from content_management_portal.interactors.storages.\
     test_case_storage_interface import TestCaseStorageInterface
 from content_management_portal.interactors.storages.\
-    problem_statement_storage_interface import ProblemStatementStorageInterface
+    question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface\
     import PresenterInterface
 from content_management_portal.interactors.swap_test_cases_interactor\
@@ -17,16 +17,16 @@ def test_create_test_case_interactor_with_invalid_question_id_raises_error(
     # Arrange
     question_id = 1
     test_case_storage = create_autospec(TestCaseStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = SwapTestCasesInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = False
+    question_storage.is_valid_question_id.return_value = False
     presenter.raise_invalid_question_id_exception.side_effect = NotFound
 
     # Act
@@ -37,7 +37,7 @@ def test_create_test_case_interactor_with_invalid_question_id_raises_error(
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     test_case_storage.swap_test_cases.assert_not_called()
@@ -49,16 +49,16 @@ def test_create_test_case_interactor_with_invalid_first_test_case_id_raises_erro
     # Arrange
     question_id = 1
     test_case_storage = create_autospec(TestCaseStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = SwapTestCasesInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     test_case_storage.get_test_case_ids.return_value = [2]
     test_case_storage.get_given_question_test_case_ids.return_value = [1, 2]
     presenter.raise_invalid_test_case_id_exception.side_effect = NotFound
@@ -71,7 +71,7 @@ def test_create_test_case_interactor_with_invalid_first_test_case_id_raises_erro
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     test_case_storage.swap_test_cases.assert_not_called()
@@ -82,16 +82,16 @@ def test_create_test_case_interactor_with_invalid_second_test_case_id_raises_err
     # Arrange
     question_id = 1
     test_case_storage = create_autospec(TestCaseStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = SwapTestCasesInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     test_case_storage.get_test_case_ids.return_value = [1]
     test_case_storage.get_given_question_test_case_ids.return_value = [1, 2]
     presenter.raise_invalid_test_case_id_exception.side_effect = NotFound
@@ -104,7 +104,7 @@ def test_create_test_case_interactor_with_invalid_second_test_case_id_raises_err
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     test_case_storage.swap_test_cases.assert_not_called()
@@ -115,16 +115,16 @@ def test_create_test_case_interactor_when_first_test_case_id_not_belongs_to_rais
     # Arrange
     question_id = 1
     test_case_storage = create_autospec(TestCaseStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = SwapTestCasesInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     test_case_storage.get_test_case_ids.return_value = [1, 2]
     test_case_storage.get_given_question_test_case_ids.return_value = [2]
     presenter.raise_test_case_not_belongs_to_question_exception.side_effect = \
@@ -138,7 +138,7 @@ def test_create_test_case_interactor_when_first_test_case_id_not_belongs_to_rais
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     test_case_storage.swap_test_cases.assert_not_called()
@@ -150,16 +150,16 @@ def test_create_test_case_interactor_when_second_test_case_id_not_belongs_to_rai
     # Arrange
     question_id = 1
     test_case_storage = create_autospec(TestCaseStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = SwapTestCasesInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     test_case_storage.get_test_case_ids.return_value = [1, 2]
     test_case_storage.get_given_question_test_case_ids.return_value = [1]
     presenter.raise_test_case_not_belongs_to_question_exception.side_effect = \
@@ -173,7 +173,7 @@ def test_create_test_case_interactor_when_second_test_case_id_not_belongs_to_rai
         )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     test_case_storage.swap_test_cases.assert_not_called()
@@ -185,16 +185,16 @@ def test_create_test_case_interactor_with_with_valid_details(
     # Arrange
     question_id = 1
     test_case_storage = create_autospec(TestCaseStorageInterface)
-    problem_statement_storage = create_autospec(
-        ProblemStatementStorageInterface
+    question_storage = create_autospec(
+        QuestionStorageInterface
     )
     presenter = create_autospec(PresenterInterface)
     interactor = SwapTestCasesInteractor(
         test_case_storage=test_case_storage,
         presenter=presenter,
-        problem_statement_storage=problem_statement_storage
+        question_storage=question_storage
     )
-    problem_statement_storage.is_valid_question_id.return_value = True
+    question_storage.is_valid_question_id.return_value = True
     test_case_storage.get_test_case_ids.return_value = [1, 2]
     test_case_storage.get_given_question_test_case_ids.return_value = [1, 2]
     presenter.raise_test_case_not_belongs_to_question_exception.side_effect = \
@@ -207,7 +207,7 @@ def test_create_test_case_interactor_with_with_valid_details(
     )
 
     # Assert
-    problem_statement_storage.is_valid_question_id.assert_called_once_with(
+    question_storage.is_valid_question_id.assert_called_once_with(
         question_id=question_id
     )
     test_case_storage.swap_test_cases.assert_called_with(
