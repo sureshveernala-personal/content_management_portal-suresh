@@ -5,7 +5,7 @@ from content_management_portal.models import Hint
 
 
 @pytest.mark.django_db
-def test_create_hint_return_test_case_dto(
+def test_create_hint_return_hint_dto(
         question, hint_dto_without_hint_id,
         hint_with_question_id_dto
     ):

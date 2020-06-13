@@ -5,7 +5,7 @@ from content_management_portal.models import TestCase
 
 
 @pytest.mark.django_db
-def test_create_test_case_return_question_dto(
+def test_create_test_case_return_test_case_dto(
         question, test_case_dto_without_test_case_id,
         test_case_with_question_id_dto
     ):
@@ -27,4 +27,5 @@ def test_create_test_case_return_question_dto(
     assert test_case.input == expected_dto.input
     assert test_case.output == expected_dto.output
     assert test_case.is_hidden == expected_dto.is_hidden
+    assert test_case.score == expected_dto.score
     assert response_dto == expected_dto
