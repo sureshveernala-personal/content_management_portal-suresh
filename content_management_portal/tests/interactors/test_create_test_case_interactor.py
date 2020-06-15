@@ -23,7 +23,6 @@ def test_create_test_case_interactor_with_invalid_question_id_raises_error(
     presenter = create_autospec(PresenterInterface)
     interactor = CreateTestCaseInteractor(
         test_case_storage=test_case_storage,
-        presenter=presenter,
         question_storage=question_storage
     )
     test_case_storage.get_max_test_case_number.return_value = None
@@ -32,8 +31,9 @@ def test_create_test_case_interactor_with_invalid_question_id_raises_error(
 
     # Act
     with pytest.raises(NotFound):
-        interactor.create_test_case(
-            question_id=question_id, test_case_details=test_case_dict
+        interactor.create_test_case_wrapper(
+            question_id=question_id, test_case_details=test_case_dict,
+            presenter=presenter,
         )
 
     # Assert
@@ -55,7 +55,6 @@ def test_create_test_case_interactor_with_invalid_test_case_id_raises_error(
     presenter = create_autospec(PresenterInterface)
     interactor = CreateTestCaseInteractor(
         test_case_storage=test_case_storage,
-        presenter=presenter,
         question_storage=question_storage
     )
     test_case_storage.get_max_test_case_number.return_value = None
@@ -65,8 +64,9 @@ def test_create_test_case_interactor_with_invalid_test_case_id_raises_error(
 
     # Act
     with pytest.raises(NotFound):
-        interactor.create_test_case(
-            question_id=question_id, test_case_details=test_case_dict
+        interactor.create_test_case_wrapper(
+            question_id=question_id, test_case_details=test_case_dict,
+            presenter=presenter
         )
 
     # Assert
@@ -91,7 +91,6 @@ def test_create_test_case_interactor_when_test_case_not_belongs_to_question_rais
     presenter = create_autospec(PresenterInterface)
     interactor = CreateTestCaseInteractor(
         test_case_storage=test_case_storage,
-        presenter=presenter,
         question_storage=question_storage
     )
     test_case_storage.get_max_test_case_number.return_value = None
@@ -102,8 +101,10 @@ def test_create_test_case_interactor_when_test_case_not_belongs_to_question_rais
 
     # Act
     with pytest.raises(NotFound):
-        interactor.create_test_case(
-            question_id=question_id, test_case_details=test_case_dict
+        interactor.create_test_case_wrapper(
+            question_id=question_id,
+            presenter=presenter,
+            test_case_details=test_case_dict
         )
 
     # Assert
@@ -132,7 +133,6 @@ def test_create_test_case_interactor_without_giving_test_case_id_return_dict(
     presenter = create_autospec(PresenterInterface)
     interactor = CreateTestCaseInteractor(
         test_case_storage=test_case_storage,
-        presenter=presenter,
         question_storage=question_storage
     )
     test_case_storage.get_max_test_case_number.return_value = None
@@ -143,8 +143,9 @@ def test_create_test_case_interactor_without_giving_test_case_id_return_dict(
         test_case_with_question_id_dict
 
     # Act
-    response = interactor.create_test_case(
+    response = interactor.create_test_case_wrapper(
         question_id=question_id,
+        presenter=presenter,
         test_case_details=test_case_dict_without_test_case_id
     )
 
@@ -173,7 +174,6 @@ def test_create_test_case_interactor_by_giving_test_case_id_return_dict(
     presenter = create_autospec(PresenterInterface)
     interactor = CreateTestCaseInteractor(
         test_case_storage=test_case_storage,
-        presenter=presenter,
         question_storage=question_storage
     )
     test_case_storage.get_max_test_case_number.return_value = None
@@ -186,8 +186,9 @@ def test_create_test_case_interactor_by_giving_test_case_id_return_dict(
         test_case_with_question_id_dict
 
     # Act
-    response = interactor.create_test_case(
+    response = interactor.create_test_case_wrapper(
         question_id=question_id,
+        presenter=presenter,
         test_case_details=test_case_dict
     )
 
@@ -218,7 +219,6 @@ def test_create_test_case_interactor_by_giving_test_case_id_when_question_has_te
     presenter = create_autospec(PresenterInterface)
     interactor = CreateTestCaseInteractor(
         test_case_storage=test_case_storage,
-        presenter=presenter,
         question_storage=question_storage
     )
     test_case_storage.get_max_test_case_number.return_value = 1
@@ -231,8 +231,9 @@ def test_create_test_case_interactor_by_giving_test_case_id_when_question_has_te
         test_case_with_question_id_dict
 
     # Act
-    response = interactor.create_test_case(
+    response = interactor.create_test_case_wrapper(
         question_id=question_id,
+        presenter=presenter,
         test_case_details=test_case_dict
     )
 

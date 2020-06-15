@@ -6,18 +6,39 @@ from content_management_portal.interactors.storages.\
 from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
 from content_management_portal.dtos.dtos import TestCaseDto
+from content_management_portal.exceptions.exceptions import InvalidQuestionId,\
+    InvalidTestCaseId, TestCaseNotBelongsToQuestion
 
 
 class CreateTestCaseInteractor:
     def __init__(
             self,
             test_case_storage: TestCaseStorageInterface,
-            presenter: PresenterInterface,
             question_storage: QuestionStorageInterface
         ):
         self.test_case_storage = test_case_storage
-        self.presenter = presenter
         self.question_storage = question_storage
+
+
+    def create_test_case_wrapper(
+            self, question_id: int, test_case_details: Dict,
+            presenter: PresenterInterface,
+        ):
+            try:
+                test_case_with_question_id_dto = self.create_test_case(
+                    question_id=question_id,
+                    test_case_details=test_case_details
+                )
+            except InvalidQuestionId:
+                raise presenter.raise_invalid_question_id_exception()
+            except InvalidTestCaseId:
+                presenter.raise_invalid_test_case_id_exception()
+            except TestCaseNotBelongsToQuestion:
+                presenter.raise_test_case_not_belongs_to_question_exception()
+            return presenter.get_create_test_case_response(
+                question_id=question_id,
+                test_case_with_question_id_dto=test_case_with_question_id_dto
+            )
 
 
     def create_test_case(self, question_id: int, test_case_details: Dict):
@@ -46,12 +67,7 @@ class CreateTestCaseInteractor:
                 test_case_details=updated_test_case_dto
             )
 
-        test_case_dict = self.presenter.\
-            get_create_test_case_response(
-                question_id=question_id,
-                test_case_with_question_id_dto=test_case_with_question_id_dto
-            )
-        return test_case_dict
+        return test_case_with_question_id_dto
 
 
     def _convert_test_case_dict_to_test_case_dto(self, test_case: Dict):
@@ -70,7 +86,7 @@ class CreateTestCaseInteractor:
         is_invalid_question_id = not self.question_storage.\
             is_valid_question_id(question_id=question_id)
         if is_invalid_question_id:
-            self.presenter.raise_invalid_question_id_exception()
+            raise InvalidQuestionId
 
 
     def _validate_test_case(self, test_case_id: int, question_id: int):
@@ -79,14 +95,14 @@ class CreateTestCaseInteractor:
         )
         is_invalid_test_case_id = not is_valid_test_case_id
         if is_invalid_test_case_id:
-            self.presenter.raise_invalid_test_case_id_exception()
+            raise InvalidTestCaseId
 
         is_test_case_not_belongs_to_question = not self.test_case_storage.\
             is_test_case_belongs_to_question(
                 question_id=question_id, test_case_id=test_case_id
             )
         if is_test_case_not_belongs_to_question:
-           self.presenter.raise_test_case_not_belongs_to_question_exception()
+            raise TestCaseNotBelongsToQuestion
 
 
     def _update_test_case_number(
