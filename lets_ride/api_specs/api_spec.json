@@ -1,212 +1,795 @@
 {
-        "swagger": "2.0",
-        "host": "127.0.0.1:8000",
-        "basePath": "/api/lets_ride/",
-        "info": {
-            "version": "1.0.0",
-            "title": "Simple API",
-            "description": "A simple API to learn how to write OpenAPI Specification"
-        },
-        "schemes": [
-            "http"
-        ],
-        "consumes": [
-            "application/json"
-        ],
-        "produces": [
-            "application/json"
-        ],
-        "securityDefinitions": {
-            "oauth": {
-                "tokenUrl": "http://auth.ibtspl.com/oauth2/",
-                "flow": "password",
-                "scopes": {
-                    "read": "read users",
-                    "write": "create users",
-                    "update": "update users",
-                    "delete": "delete users"
+    "swagger": "2.0",
+    "host": "127.0.0.1:8080",
+    "basePath": "/api/lets_ride/",
+    "info": {
+        "version": "1.0.0",
+        "title": "Lets Ride",
+        "description": "API to develop OpenAPI Specification for Lets Ride App"
+    },
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users",
+                "superuser": "Super Users"
+            },
+            "type": "oauth2"
+        }
+    },
+    "security": [],
+    "definitions": {
+        "LocationsAndTimings": {
+            "type": "object",
+            "properties": {
+                "from_loaction": {
+                    "type": "string"
                 },
-                "type": "oauth2"
-            }
+                "to_location": {
+                    "type": "string"
+                },
+                "data_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "from_date_time": {
+                    "type": "string",
+                    "format": "data-time"
+                },
+                "to_date_time": {
+                    "type": "string",
+                    "format": "data-time"
+                },
+                "is_flexible_timings": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "from_loaction",
+                "to_location",
+                "is_flexible_timings"
+            ]
         },
-        "security": [],
-        "definitions": {
-            "TodoId": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer"
+        "PersonDetailsAndStatus": {
+            "type": "object",
+            "properties": {
+                "accepted_person_details": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "CONFIRM",
+                        "PENDING",
+                        "EXPIRED"
+                    ]
+                }
+            },
+            "required": [
+                "accepted_person_details",
+                "status"
+            ]
+        },
+        "RideRequest": {
+            "allOf": [{
+                    "$ref": "#/definitions/LocationsAndTimings"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "number_of_seats": {
+                            "type": "integer"
+                        },
+                        "laguage_quantity": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "number_of_seats",
+                        "laguage_quantity"
+                    ]
+                }
+            ]
+        },
+        "RideRequestFullDetails": {
+            "allOf": [{
+                    "$ref": "#/definitions/RideRequest"
+                },
+                {
+                    "$ref": "#/definitions/PersonDetailsAndStatus"
+                }
+            ]
+        },
+        "RideRequests": {
+            "type": "object",
+            "properties": {
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "total_ride_requests": {
+                    "type": "integer"
+                },
+                "filter_by": {
+                    "type": "string",
+                    "enum": [
+                        "CONFIRM",
+                        "PENDING",
+                        "EXPIRED"
+                    ]
+                },
+                "order_by": {
+                    "type": "string",
+                    "enum": [
+                        "date_time",
+                        "number_of_seats"
+                    ]
+                },
+                "ride_requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RideRequestFullDetails"
                     }
                 }
             },
-            "BasicTodo": {
-                "type": "object",
-                "properties": {
-                    "description": {
-                        "type": "string"
-                    },
-                    "is_completed": {
-                        "type": "boolean"
-                    },
-                    "remind_at": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "description"
-                ]
-            },
-            "Todo": {
-                "allOf": [
-                    {
-                        "$ref": "#/definitions/BasicTodo"
-                    },
-                    {
-                        "$ref": "#/definitions/TodoId"
-                    }
-                ]
-            }
+            "required": [
+                "offset",
+                "limit",
+                "total_ride_requests",
+                "filter_by",
+                "order_by",
+                "ride_requests"
+            ]
         },
-        "parameters": {
-            "TodoId": {
-                "description": "todo id",
-                "in": "path",
-                "name": "id",
-                "required": true,
-                "type": "integer"
-            },
-            "BasicTodo": {
-                "description": "Todo Parameter",
-                "in": "body",
-                "name": "todo",
-                "required": true,
-                "schema": {
-                    "$ref": "#/definitions/BasicTodo"
+        "InvalidNumberOfSeatsOrLaguageQuantity": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                },
+                "res_status": {
+                    "type": "string",
+                    "enum": [
+                        "InvalidNumberOfSeats",
+                        "InvalidLaguageQuantity"
+                    ]
                 }
             }
         },
-        "responses": {
-            "SuccessResponse": {
-                "description": "success response"
+        "InvalidOffsetOrLimitValue": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                },
+                "res_status": {
+                    "type": "string",
+                    "enum": [
+                        "InvalidOffsetValue",
+                        "InvalidLimitValue"
+                    ]
+                }
             }
         },
-        "paths": {
-            "/todos/": {
-                "get": {
-                    "summary": "Get all todos",
-                    "description": "Returns a list containing all todos.",
-                    "operationId": "get_todos",
-                    "security": [
-                        {
-                            "oauth": [
-                                "read"
+        "AssetTransportRequest": {
+            "allOf": [{
+                    "$ref": "#/definitions/LocationsAndTimings"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "assets_quantity": {
+                            "type": "integer"
+                        },
+                        "asset_type": {
+                            "type": "string",
+                            "enum": [
+                                "PARCEL",
+                                "BAGS",
+                                "OTHERS"
+                            ]
+                        },
+                        "asset_sensitivity": {
+                            "type": "string",
+                            "enum": [
+                                "HIGH",
+                                "NORMAL"
+                            ]
+                        },
+                        "whom_to_deliver": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assets_quantity",
+                        "asset_type",
+                        "asset_sensitivity",
+                        "whom_to_deliver"
+                    ]
+                }
+            ]
+        },
+        "AssetTransportFullDetails": {
+            "allOf": [{
+                    "$ref": "#/definitions/AssetTransportRequest"
+                },
+                {
+                    "$ref": "#/definitions/PersonDetailsAndStatus"
+                }
+            ]
+        },
+        "AssetTransportRequests": {
+            "type": "object",
+            "properties": {
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "total_asset_transport_requests": {
+                    "type": "integer"
+                },
+                "filter_by": {
+                    "type": "string",
+                    "enum": [
+                        "CONFIRM",
+                        "PENDING",
+                        "EXPIRED"
+                    ]
+                },
+                "order_by": {
+                    "type": "string",
+                    "enum": [
+                        "date_time",
+                        "assets_quantity"
+                    ]
+                },
+                "asset_transport_requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AssetTransportFullDetails"
+                    }
+                }
+            },
+            "required": [
+                "offset",
+                "limit",
+                "total_asset_transport_requests",
+                "filter_by",
+                "order_by",
+                "asset_transport_requests"
+            ]
+        },
+        "RideShare": {
+            "allOf": [{
+                    "$ref": "#/definitions/LocationsAndTimings"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "number_of_seats_available": {
+                            "type": "integer"
+                        },
+                        "laguage_quantity": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "number_of_seats_available",
+                        "laguage_quantity"
+                    ]
+                }
+            ]
+        },
+        "RideShareFullDetails": {
+            "allOf": [{
+                    "$ref": "#/definitions/RideShare"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ACTIVE",
+                                "EXPIRED"
                             ]
                         }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "A list of todos",
-                            "schema": {
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/definitions/Todo"
-                                }
-                            }
-                        }
                     }
+                }
+            ]
+        },
+        "RideShares": {
+            "type": "object",
+            "properties": {
+                "offset": {
+                    "type": "integer"
                 },
-                "post": {
-                    "summary": "create a todo",
-                    "description": "Create a todo",
-                    "operationId": "create_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "write"
-                            ]
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/parameters/BasicTodo"
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "create a todo",
-                            "schema": {
-                                "$ref": "#/definitions/TodoId"
-                            }
-                        }
+                "limit": {
+                    "type": "integer"
+                },
+                "total_ride_shares": {
+                    "type": "integer"
+                },
+                "filter_by": {
+                    "type": "string",
+                    "enum": [
+                        "ACTIVE",
+                        "EXPIRED"
+                    ]
+                },
+                "order_by": {
+                    "type": "string",
+                    "enum": [
+                        "date_time",
+                        "number_of_seats"
+                    ]
+                },
+                "ride_shares": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RideShareFullDetails"
                     }
                 }
             },
-            "/todos/{id}/": {
-                "parameters": [
+            "required": [
+                "offset",
+                "limit",
+                "total_ride_requests",
+                "filter_by",
+                "order_by",
+                "ride_shares"
+            ]
+        },
+        "TravelInfoShare": {
+            "allOf": [{
+                    "$ref": "#/definitions/LocationsAndTimings"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "travel_medium": {
+                            "type": "string",
+                            "enum": [
+                                "BUS",
+                                "CAR",
+                                "FLIGHT"
+                            ]
+                        },
+                        "assets_quantity": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "travel_medium",
+                        "assets_quantity"
+                    ]
+                }
+            ]
+        },
+        "TravelInfoShareFullDetails": {
+            "allOf": [{
+                    "$ref": "#/definitions/TravelInfoShare"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ACTIVE",
+                                "EXPIRED"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "TravelInfoShares": {
+            "type": "object",
+            "properties": {
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "total_travel_info_shares": {
+                    "type": "integer"
+                },
+                "filter_by": {
+                    "type": "string",
+                    "enum": [
+                        "ACTIVE",
+                        "EXPIRED"
+                    ]
+                },
+                "order_by": {
+                    "type": "string",
+                    "enum": [
+                        "date_time",
+                        "assets_quantity"
+                    ]
+                },
+                "travel_info_shares": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TravelInfoShareFullDetails"
+                    }
+                }
+            },
+            "required": [
+                "offset",
+                "limit",
+                "total_travel_info_shares",
+                "filter_by",
+                "order_by",
+                "travel_info_shares"
+            ]
+        },
+        "RequestStatus": {
+            "type": "object",
+            "properties": {
+                "status": "string",
+                "enum": [
+                    "CONFIRM",
+                    "PENDING"
+                ]
+            }
+        },
+        "MatchingRideRequest": {
+            "allOf": [{
+                    "$ref": "#/definitions/RequestStatus"
+                },
+                {
+                    "$ref": "#/definitions/RideRequest"
+                }
+            ]
+        },
+        "MatchingRideRequests": {
+            "type": "object",
+            "properties": {
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "total_ride_requests": {
+                    "type": "integer"
+                },
+                "filter_by": {
+                    "type": "string",
+                    "enum": [
+                        "CONFIRM",
+                        "PENDING"
+                    ]
+                },
+                "order_by": {
+                    "type": "string",
+                    "enum": [
+                        "date_time",
+                        "number_of_seats"
+                    ]
+                },
+                "ride_requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RideRequestFullDetails"
+                    }
+                }
+            },
+            "required": [
+                "offset",
+                "limit",
+                "total_ride_requests",
+                "filter_by",
+                "order_by",
+                "ride_requests"
+            ]
+        },
+        "MatchingAssetTransportRequest": {
+            "allOf": [{
+                    "$ref": "#/definitions/RequestStatus"
+                },
+                {
+                    "$ref": "#/definitions/AssetTransportRequest"
+                }
+            ]
+        },
+        "MatchingAssetTransportRequests": {
+            "type": "object",
+            "properties": {
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "total_asset_transport_requests": {
+                    "type": "integer"
+                },
+                "filter_by": {
+                    "type": "string",
+                    "enum": [
+                        "CONFIRM",
+                        "PENDING"
+                    ]
+                },
+                "order_by": {
+                    "type": "string",
+                    "enum": [
+                        "date_time",
+                        "assets_quantity"
+                    ]
+                },
+                "asset_transport_requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MatchingAssetTransportRequest"
+                    }
+                }
+            },
+            "required": [
+                "offset",
+                "limit",
+                "total_asset_transport_requests",
+                "filter_by",
+                "order_by",
+                "asset_transport_requests"
+            ]
+        }
+    },
+    "parameters": {
+        "CreateRideRequestParameter": {
+            "description": "Parameters for Ride Request.",
+            "in": "body",
+            "name": "ride_request_parameter",
+            "schema": {
+                "$ref": "#/definitions/RideRequest"
+            }
+        },
+        "CreateAssetTransportRequestParameter": {
+            "description": "Parameters for Asset Transport Request.",
+            "in": "body",
+            "name": "asset_transport_request_parameter",
+            "schema": {
+                "$ref": "#/definitions/AssetTransportRequest"
+            }
+        },
+        "CreateRideShareParameter": {
+            "description": "Parameters to share Ride.",
+            "in": "body",
+            "name": "ride_share_parameter",
+            "schema": {
+                "$ref": "#/definitions/RideShare"
+            }
+        },
+        "CreateTravelInfoShareParameter": {
+            "description": "Parameters to share Travel Info.",
+            "in": "body",
+            "name": "travel_info_share_parameter",
+            "schema": {
+                "$ref": "#/definitions/TravelInfoShare"
+            }
+        },
+        "OffsetQueryParameter": {
+            "name": "offset",
+            "description": "offset value",
+            "in": "query",
+            "required": true,
+            "type": "integer"
+        },
+        "LimitQueryParameter": {
+            "name": "limit",
+            "description": "limit value",
+            "in": "query",
+            "required": true,
+            "type": "integer"
+        }
+    },
+    "responses": {
+        "CreateRideRequestResponse": {
+            "description": "Request for Ride created."
+        },
+        "BadRequestForInvalidNumberOfSeatsOrLaguageQuantity": {
+            "description": "BadRequest",
+            "schema": {
+                "$ref": "#/definitions/InvalidNumberOfSeatsOrLaguageQuantity"
+            }
+        },
+        "BadRequestForInvalidOffsetOrLimitValue": {
+            "description": "BadRequest",
+            "schema": {
+                "$ref": "#/definitions/InvalidOffsetOrLimitValue"
+            }
+        },
+        "CreateAssetTransportRequestResponse": {
+            "description": "Request for Asset Transport created."
+        },
+        "BadRequestForInvalidNumberOfAssets": {
+            "description": "Invalid number of Assets.",
+        },
+        "CreateRideShareResponse": {
+            "description": "Share for Ride created"
+        },
+        "CreateTravelInfoShareResponse": {
+            "description": "Share for Travel Info created."
+        },
+        "GetRideRequestsResponse": {
+            "description": "Get Ride Requests",
+            "schema": {
+                "$ref": "#/definitions/RideRequests"
+            }
+        },
+        "GetAssetTransportRequestsResponse": {
+            "description": "Get Asset Transport Requests",
+            "schema": {
+                "$ref": "#/definitions/AssetTransportRequests"
+            }
+        }
+    },
+    "paths": {
+        "/ride_requests/": {
+            "post": {
+                "summary": "create a ride request.",
+                "description": "request a ride for the user.",
+                "operationId": "create_ride_request",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/CreateRideRequestParameter"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/CreateRideRequestResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequestForInvalidNumberOfSeatsOrLaguageQuantity"
+                    }
+                }
+            },
+            "get": {
+                "summary": "get ride requests.",
+                "description": "get ride requests of the user.",
+                "operationId": "get_ride_requests",
+                "security": [{
+                    "oauth": [
+                        "read",
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                        "$ref": "#/parameters/OffsetQueryParameter"
+                    },
                     {
-                        "$ref": "#/parameters/TodoId"
+                        "$ref": "#/parameters/LimitQueryParameter"
                     }
                 ],
-                "get": {
-                    "summary": "Get a todo",
-                    "description": "Returns a todo.",
-                    "operationId": "get_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "read"
-                            ]
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "description": "A todo",
-                            "schema": {
-                                "$ref": "#/definitions/Todo"
-                            }
-                        }
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/GetRideRequestsResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequestForInvalidOffsetOrLimitValue"
                     }
-                },
-                "put": {
-                    "parameters": [
-                        {
-                            "$ref": "#/parameters/BasicTodo"
-                        }
-                    ],
-                    "summary": "Updates a todo",
-                    "description": "Updates a todo.",
-                    "operationId": "update_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "update"
-                            ]
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/responses/SuccessResponse"
-                        }
+                }
+            }
+        },
+        "/asset_transport_requests/": {
+            "post": {
+                "summary": "create a asset transport request.",
+                "description": "request asset transport for the user.",
+                "operationId": "create_asset_transport_request",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/CreateAssetTransportRequestParameter"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/CreateAssetTransportRequestResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequestForInvalidNumberOfAssets"
                     }
-                },
-                "delete": {
-                    "summary": "Deletes a todo",
-                    "description": "Deletes a todo.",
-                    "operationId": "delete_todo",
-                    "security": [
-                        {
-                            "oauth": [
-                                "delete"
-                            ]
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/responses/SuccessResponse"
-                        }
+                }
+            },
+            "get": {
+                "summary": "get asset transport requests.",
+                "description": "get asset transport requests of the user.",
+                "operationId": "get_asset_transport_requests",
+                "security": [{
+                    "oauth": [
+                        "read",
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                        "$ref": "#/parameters/OffsetQueryParameter"
+                    },
+                    {
+                        "$ref": "#/parameters/LimitQueryParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/GetAssetTransportRequestsResponse"
+                    }
+                }
+            }
+        },
+        "/ride_shares/": {
+            "post": {
+                "summary": "create a ride share.",
+                "description": "share a ride for the user.",
+                "operationId": "create_ride_share",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/CreateRideShareParameter"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/CreateRideShareResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequestForInvalidNumberOfSeatsOrLaguageQuantity"
+                    }
+                }
+            }
+        },
+        "/travel_info_shares/": {
+            "post": {
+                "summary": "create a travel info share.",
+                "description": "share travel info for the user.",
+                "operationId": "create_travel_info_share",
+                "security": [{
+                    "oauth": [
+                        "write",
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/CreateTravelInfoShareParameter"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/CreateTravelInfoShareResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequestForInvalidNumberOfAssets"
                     }
                 }
             }
         }
     }
-    
+}

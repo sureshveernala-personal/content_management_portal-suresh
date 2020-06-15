@@ -45,6 +45,7 @@ class TestCaseStorageImplementation(TestCaseStorageInterface):
             test_case_number=test_case_number, input=input, output=output,
             score=score, is_hidden=is_hidden
         )
+        test_case.full_clean()
         test_case_dto = self._convert_test_case_object_into_dto(
             test_case=test_case
         )

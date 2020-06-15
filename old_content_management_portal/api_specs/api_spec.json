@@ -726,7 +726,7 @@
             "name": "question_id",
             "in": "path",
             "description": "id of the question.",
-            "type": "integer",
+            "type": "integer"
             "format": "int64",
             "required": true
         },
