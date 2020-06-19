@@ -39,4 +39,3 @@ class MCQQuestionSubmitFormResponseInteractor(
             mcq_response_dto=mcq_response_dto
         )
         return response_id
-
