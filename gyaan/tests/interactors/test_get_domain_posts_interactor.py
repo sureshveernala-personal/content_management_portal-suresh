@@ -121,6 +121,7 @@ def test_get_domain_posts_with_vaalid_details(
     presenter =create_autospec(PresenterInterface)
     interactor = GetDomainPostsInteractor(storage=storage)
     get_posts_mock.return_value = post_details_dto
+    storage.get_domain_post_ids.return_value = [1, 2]
     storage.get_total_doamain_posts_count.return_value = 10
     presenter.get_domain_posts_response.return_value = "get_domain_posts"
 
@@ -131,6 +132,7 @@ def test_get_domain_posts_with_vaalid_details(
         )
 
     # Assert
+    get_posts_mock.assert_called_once_with(post_ids = [1, 2])
     presenter.get_domain_posts_response.assert_called_once_with(
         post_details_dto=post_details_dto
     )

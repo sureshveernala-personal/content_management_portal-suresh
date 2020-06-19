@@ -5,11 +5,18 @@ from gyaan.interactors.storages.storage_interface import StorageInterface
 from gyaan.interactors.presenters.presenter_interface import PresenterInterface
 from gyaan.interactors.get_domain_with_posts_interactor import \
     GetDomainWithPostsInteractor
-from gyaan.exceptions.exceptions import InvalidDomainId, UserNotDomainMember
+from gyaan.exceptions.exceptions import InvalidDomainId, UserNotDomainMember,\
+    InvalidOffsetValue, InvalidLimitValue
 from gyaan.interactors.get_posts_interactor import GetPostsInteractor
+from gyaan.interactors.presenters.dtos import DomainDetailsWithPostsDto
 
 
-def test_get_domain_with_posts_with_invalid_domain_id_raises_error():
+
+@patch('gyaan.interactors.get_domain_details_interactor\
+.GetDomainDetailsInteractor.get_domain_details')
+def test_get_domain_with_posts_with_invalid_domain_id_raises_error(
+        get_domain_details_mock
+    ):
     # Arrange
     domain_id = 1
     user_id = 1
@@ -18,7 +25,8 @@ def test_get_domain_with_posts_with_invalid_domain_id_raises_error():
     storage = create_autospec(StorageInterface)
     presenter =create_autospec(PresenterInterface)
     interactor = GetDomainWithPostsInteractor(storage=storage)
-    storage.validate_domain_id.side_effect = InvalidDomainId
+    get_domain_details_mock.side_effect = InvalidDomainId
+    # storage.validate_domain_id.side_effect = InvalidDomainId
     presenter.raise_invalid_domain_id_exception.side_effect = NotFound
 
     with pytest.raises(NotFound):
@@ -28,7 +36,11 @@ def test_get_domain_with_posts_with_invalid_domain_id_raises_error():
         )
 
 
-def test_get_domain_with_posts_when_user_not_a_domain_member_raises_error():
+@patch('gyaan.interactors.get_domain_details_interactor\
+.GetDomainDetailsInteractor.get_domain_details')
+def test_get_domain_with_posts_when_user_not_a_domain_member_raises_error(
+        get_domain_details_mock
+    ):
     # Arrange
     domain_id = 1
     user_id = 1
@@ -37,7 +49,8 @@ def test_get_domain_with_posts_when_user_not_a_domain_member_raises_error():
     storage = create_autospec(StorageInterface)
     presenter =create_autospec(PresenterInterface)
     interactor = GetDomainWithPostsInteractor(storage=storage)
-    storage.validate_does_user_domain_member.side_effect = UserNotDomainMember
+    get_domain_details_mock.side_effect = UserNotDomainMember
+    # storage.validate_does_user_domain_member.side_effect = UserNotDomainMember
     presenter.raise_user_not_domain_member_exception.side_effect = BadRequest
 
     with pytest.raises(BadRequest):
@@ -47,7 +60,11 @@ def test_get_domain_with_posts_when_user_not_a_domain_member_raises_error():
         )
 
 
-def test_get_domain_with_posts_with_invalid_offset_value_member_raises_error():
+@patch('gyaan.interactors.get_domain_details_interactor\
+.GetDomainDetailsInteractor.get_domain_details')
+def test_get_domain_with_posts_with_invalid_offset_value_member_raises_error(
+        get_domain_details_mock
+    ):
     # Arrange
     domain_id = 1
     user_id = 1
@@ -56,6 +73,7 @@ def test_get_domain_with_posts_with_invalid_offset_value_member_raises_error():
     storage = create_autospec(StorageInterface)
     presenter =create_autospec(PresenterInterface)
     interactor = GetDomainWithPostsInteractor(storage=storage)
+    get_domain_details_mock.side_effect = InvalidOffsetValue
     presenter.raise_invalid_offset_value_exception.side_effect = BadRequest
 
     with pytest.raises(BadRequest):
@@ -65,7 +83,11 @@ def test_get_domain_with_posts_with_invalid_offset_value_member_raises_error():
         )
 
 
-def test_get_domain_with_posts_with_invalid_limit_value_member_raises_error():
+@patch('gyaan.interactors.get_domain_details_interactor\
+.GetDomainDetailsInteractor.get_domain_details')
+def test_get_domain_with_posts_with_invalid_limit_value_member_raises_error(
+        get_domain_details_mock
+    ):
     # Arrange
     domain_id = 1
     user_id = 1
@@ -74,6 +96,7 @@ def test_get_domain_with_posts_with_invalid_limit_value_member_raises_error():
     storage = create_autospec(StorageInterface)
     presenter =create_autospec(PresenterInterface)
     interactor = GetDomainWithPostsInteractor(storage=storage)
+    get_domain_details_mock.side_effect = InvalidLimitValue
     presenter.raise_invalid_limit_value_exception.side_effect = BadRequest
 
     with pytest.raises(BadRequest):
@@ -83,16 +106,29 @@ def test_get_domain_with_posts_with_invalid_limit_value_member_raises_error():
         )
 
 
-def test_get_domain_with_posts_when_offset_more_then_available():
+@patch('gyaan.interactors.get_domain_details_interactor\
+.GetDomainDetailsInteractor.get_domain_details')
+@patch('gyaan.interactors.get_domain_posts_interactor.\
+GetDomainPostsInteractor.get_domain_posts')
+def test_get_domain_with_posts_when_offset_more_then_available(
+        get_domain_posts_mock, get_domain_details_mock, domain_details_dto
+    ):
     # Arrange
     domain_id = 1
     user_id = 1
     offset = 2
     limit = 5
+    excepted_dto = DomainDetailsWithPostsDto(
+        domain_details_dto=domain_details_dto,
+        post_details_dto=[]
+    )
     storage = create_autospec(StorageInterface)
     presenter =create_autospec(PresenterInterface)
     interactor = GetDomainWithPostsInteractor(storage=storage)
     storage.get_total_doamain_posts_count.return_value = 1
+    get_domain_details_mock.return_value = domain_details_dto
+    get_domain_posts_mock.return_value = []
+    
     presenter.get_domain_with_posts_response.return_value = "get_domain_with_posts"
 
     # Act
@@ -103,10 +139,9 @@ def test_get_domain_with_posts_when_offset_more_then_available():
 
     # Assert
     presenter.get_domain_with_posts_response.assert_called_once_with(
-        domain_details_with_posts_dto=[]
+        domain_details_with_posts_dto=excepted_dto
     )
     assert response == "get_domain_with_posts"
-
 
 
 @patch('gyaan.interactors.get_domain_details_interactor\

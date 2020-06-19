@@ -50,19 +50,6 @@ class GetDomainWithPostsInteractor():
     def get_domain_with_posts(
             self, user_id: int, domain_id:  int, offset: int, limit:int
         ):
-        self.storage.validate_domain_id(domain_id=domain_id)
-
-        self.storage.validate_does_user_domain_member(
-            user_id=user_id, domain_id=domain_id
-        )
-        self.validate_offset(offset=offset)
-        self.validate_limit(limit=limit)
-
-        domain_posts_count = \
-            self.storage.get_total_doamain_posts_count(domain_id=domain_id)
-        is_offset_more_then_available = offset > domain_posts_count
-        if is_offset_more_then_available:
-            return []
 
         get_domain_details_interactor= \
             GetDomainDetailsInteractor(storage=self.storage)
