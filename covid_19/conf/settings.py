@@ -1,0 +1,1 @@
+# write your covid_19 settings
