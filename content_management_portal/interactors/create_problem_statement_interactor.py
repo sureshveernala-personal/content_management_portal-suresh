@@ -4,29 +4,52 @@ from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
 from typing import Dict, Optional
 from content_management_portal.dtos.dtos import DescriptionDto
+from content_management_portal.interactors.mixins.question_validation_mixin \
+    import QuestionValidationMixin
+from content_management_portal.exceptions.exceptions import InvalidQuestionId
 
 
-class CreateProblemStatementInteractor:
+class CreateProblemStatementInteractor(QuestionValidationMixin):
     def __init__(
             self,
             question_storage: QuestionStorageInterface,
-            presenter: PresenterInterface
         ):
         self.question_storage = question_storage
-        self.presenter = presenter
+    
+    
+    def create_problem_statement_wrapper(
+            self,
+            user_id: int,
+            short_text: str,
+            description_dto: DescriptionDto,
+            question_id: Optional[None],
+            presenter: PresenterInterface
+        ):
+        try:
+            question_dto = self.create_problem_statement(
+                user_id=user_id, short_text=short_text,
+                description_dto=description_dto, question_id=question_id
+            )
+        except InvalidQuestionId:
+            presenter.raise_invalid_question_id_exception()
+
+        response = presenter.get_create_problem_statement_response(
+                question_dto=question_dto
+            )
+        return response
 
 
     def create_problem_statement(
             self,
             user_id: int,
             short_text: str,
-            description: Dict,
+            description_dto: DescriptionDto,
             question_id: Optional[None],
         ) -> int:
-        description_dto = DescriptionDto(
-            content=description['content'],
-            content_type=description['content_type']
-        )
+        # description_dto = DescriptionDto(
+        #     content=description['content'],
+        #     content_type=description['content_type']
+        # )
         is_update = question_id is not None
         if is_update:
             question_dto = \
@@ -43,11 +66,7 @@ class CreateProblemStatementInteractor:
                 short_text=short_text,
                 description=description_dto
             )
-        question_dict =\
-        self.presenter.get_create_problem_statement_response(
-            question_dto=question_dto
-        )
-        return question_dict
+        return question_dto
 
 
     def _update_problem_statement(
@@ -57,19 +76,12 @@ class CreateProblemStatementInteractor:
             description: DescriptionDto,
             question_id: int
         ):
-        is_question_exists = \
-        self.question_storage.is_valid_question_id(
+        self._validate_question_id(question_id=question_id)
+
+        new_question_id = self.question_storage.update_problem_statement(
+            user_id=user_id,
+            short_text=short_text,
+            description=description,
             question_id=question_id
         )
-        if is_question_exists:
-            new_question_id = \
-            self.question_storage.update_problem_statement(
-                user_id=user_id,
-                short_text=short_text,
-                description=description,
-                question_id=question_id
-            )
-        else:
-            self.presenter.raise_invalid_question_id_exception()
-            return
         return new_question_id
