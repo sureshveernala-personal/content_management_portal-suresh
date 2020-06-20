@@ -38,7 +38,7 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
             question_id=self.question_id
         )
         return solution_dict
-    
+
     def _prepare_solution_response(self, presenter: PresenterInterface):
         new_solution_dtos = self.create_solutions()
 
@@ -50,17 +50,36 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
 
 
     def create_solutions(self):
-        self._validate_question_id(question_id=question_id)
+        self._validate_question_id(question_id=self.question_id)
 
-        self._update_solutions(question_id=question_id)
-        self._create_new_solutions(question_id=question_id)
-        new_solution_dtos = self._get_solutions(question_id=question_id)
+        have_to_update_solutions =[]
+        have_to_update_solution_ids =[]
+        for solution_dto in self.solution_dtos:
+            is_update = solution_dto.id is not None
+            if is_update:
+                have_to_update_solution_ids.append(
+                    solution_dto.solution_id
+                )
+                have_to_update_solutions.append(solution_dto)
+        self._update_solutions(solution_ids=)
+
+        self._valiadate_solutions(
+            solution_id=solution_id,
+            solution_ids=have_to_update_solution_ids,
+        )
+        have_to_create_solutions_list = [
+            solution_dto
+            for solution_dto in self.solution_dtos
+            if solution_dto.id is None
+        ]
+        self._create_new_solutions(solution_ids=have_to_create_solutions_list)
+        new_solution_dtos = self._get_solutions()
 
         return new_solution_dtos
 
 
     @abstractmethod
-    def _get_solutions(self, question_id: int):
+    def _get_solutions(self):
         pass
 
 
@@ -78,9 +97,7 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
     #     return solution_dtos
 
 
-    def _valiadate_solutions(
-            self, solution_ids: List[int], solution_id: int, question_id: int
-        ):
+    def _valiadate_solutions(self, solution_ids: List[int], solution_id: int):
         invalid_solution_ids = \
             self._invalid_solution_ids(solution_ids=solution_ids)
         if invalid_solution_ids:
@@ -94,35 +111,13 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
                 solution_ids=solution_ids_not_question
             )
 
-    def _create_new_solutions(self, question_id: int):
-        have_to_create_solutions_list = [
-            solution_dto
-            for solution_dto in solution_dtos
-            if solution_dto.id is None
-        ]
-
-        self.solution_storage.create_solutions(
-            question_id=question_id,
-            solution_dtos=have_to_create_solutions_list
-        )
-        return
+    
+    @abstractmethod
+    def _create_new_solutions(self, solution_dtos: List[SolutionDto]):
+        pass
 
 
-    def _update_solutions(self, solution_dtos: List, question_id: int):
-        have_to_update_solutions =[]
-        have_to_update_solution_ids =[]
-        for solution_dto in solution_dtos:
-            is_update = solution_dto.id is not None
-            if is_update:
-                have_to_update_solution_ids.append(
-                    solution_dto.solution_id
-                )
-                have_to_update_solutions.append(solution_dto)
-
-        self._valiadate_solutions(
-            solution_id=solution_id,
-            solution_ids=have_to_update_solution_ids,
-        )
+    def _update_solutions(self):
         self.solution_storage.update_solutions(
             solution_ids=have_to_update_solution_ids,
             solution_dtos=have_to_update_solutions
@@ -131,7 +126,7 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
 
 
     def _invalid_solution_ids(self, solution_ids: List[int]):
-        total_solution_ids = self._get_solution_ids()
+        total_solution_ids = self._get_total_solution_ids()
         invalid_solution_ids = [
             solution_id
             for solution_id in solution_ids
@@ -145,20 +140,17 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
         pass
 
 
-    def _solution_ids_not_in_question(
-            self, solution_ids: List[int], question_id: int
-        ):
-        question_solution_ids = \
-            self._get_question_solution_ids(question_id=question_id)
-    
+    def _solution_ids_not_in_question(self, solution_ids: List[int]):
+        question_solution_ids = self._get_question_solution_ids()
+
         solution_ids_not_in_question = [
             solution_id
             for solution_id in solution_ids
             if solution_id not in question_solution_ids
         ]
         return solution_ids_not_in_question
-    
-    
+
+
     @abstractmethod
-    def _get_question_solution_ids(self, question_id):
+    def _get_question_solution_ids(self):
         pass
