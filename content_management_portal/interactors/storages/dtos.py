@@ -13,23 +13,31 @@ class DescriptionDto:
 
 @dataclass
 class SolutionDto:
+    id: int
     language: CodeLanguage
     solution_content: str
     file_name: str
 
 
 @dataclass
-class RoughSolutionDto(SolutionDto):
+class NewSolutionDto:
+    language: CodeLanguage
+    solution_content: str
+    file_name: str
+
+
+@dataclass
+class RoughSolutionDto(NewSolutionDto):
     rough_solution_id: Optional[int]
 
 
 @dataclass
-class PrefilledCodeDto(SolutionDto):
+class PrefilledCodeDto(NewSolutionDto):
     prefilled_code_id: Optional[int]
 
 
 @dataclass
-class CleanSolutionDto(SolutionDto):
+class CleanSolutionDto(NewSolutionDto):
     clean_solution_id: Optional[int]
 
 
