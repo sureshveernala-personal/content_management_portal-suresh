@@ -26,7 +26,6 @@ def test_get_domain_with_posts_with_invalid_domain_id_raises_error(
     presenter =create_autospec(PresenterInterface)
     interactor = GetDomainWithPostsInteractor(storage=storage)
     get_domain_details_mock.side_effect = InvalidDomainId
-    # storage.validate_domain_id.side_effect = InvalidDomainId
     presenter.raise_invalid_domain_id_exception.side_effect = NotFound
 
     with pytest.raises(NotFound):
