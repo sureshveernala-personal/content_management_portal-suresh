@@ -9,7 +9,8 @@ from content_management_portal.interactors.storages.dtos\
     RoughSolutionDto, TestCaseWithQuestionIdDto,\
     TestCaseDto, QuestionDto, PrefilledCodeWithQuestionIdDto,\
     PrefilledCodeDto, CleanSolutionWithQuestionIdDto, CleanSolutionDto,\
-    HintWithQuestionIdDto, DescriptionDto, HintDto, SolutionApproachDto
+    HintWithQuestionIdDto, DescriptionDto, HintDto, SolutionApproachDto,\
+    SolutionWithQuestionIdDto
 from content_management_portal.constants.exception_messages import\
     INVALID_QUESTION_ID, INVALID_ROUGH_SOLUTION_ID,\
     ROUGH_SOLUTION_NOT_BELONG_TO_QUESTION, INVALID_USER_NAME, INVALID_PASSWORD,\
@@ -20,7 +21,7 @@ from content_management_portal.constants.exception_messages import\
     HINT_NOT_BELONG_TO_QUESTION, INVALID_FIRST_TEST_CASE_ID,\
     INVALID_SECOND_TEST_CASE_ID, INVALID_FIRST_HINT_ID,\
     INVALID_SECOND_HINT_ID, SOLUTION_APPROACH_NOT_BELONG_TO_QUESTION,\
-    INVALID_SOLUTION_APPROACH_ID, CAN_NOT_CREATE_MORE_THEN_ONE_SOLUTION_APPROACH
+    INVALID_SOLUTION_APPROACH_ID,CAN_NOT_CREATE_MORE_THEN_ONE_SOLUTION_APPROACH
 
 
 class PresenterImplementation(PresenterInterface):
@@ -441,3 +442,20 @@ class PresenterImplementation(PresenterInterface):
             "solution_approach_id": solution_approach.solution_approach_id
         }
         return solution_approach_dict
+
+
+    def raise_invalid_solution_ids_exception(self):
+        pass
+
+
+    def raise_solutions_not_belongs_to_question_exception(self):
+        pass
+
+
+    def get_create_solutions_response(
+            self,
+            question_id: int,
+            solution_with_question_id_dtos: \
+            List[SolutionWithQuestionIdDto]
+        ):
+        pass

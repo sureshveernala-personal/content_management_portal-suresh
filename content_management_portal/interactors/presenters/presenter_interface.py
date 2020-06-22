@@ -6,7 +6,10 @@ from content_management_portal.interactors.storages.dtos\
     PrefilledCodeWithQuestionIdDto, CleanSolutionWithQuestionIdDto,\
     HintWithQuestionIdDto, HintDto, SolutionApproachDto, RoughSolutionDto,\
     CleanSolutionDto, TestCaseDto, PrefilledCodeDto,\
-    RoughSolutionWithQuestionIdDto, QuestionStatusDto
+    RoughSolutionWithQuestionIdDto, QuestionStatusDto,\
+    SolutionWithQuestionIdDto
+from content_management_portal.exceptions.exceptions import \
+    InvalidSolutionIds, SolutionIdsNotBelongsToQuestion
 
 
 class PresenterInterface(ABC):
@@ -184,4 +187,26 @@ class PresenterInterface(ABC):
 
     @abstractmethod
     def raise_can_not_create_more_then_one_question(self):
+        pass
+    
+    
+    @abstractmethod
+    def raise_invalid_solution_ids_exception(self, error: InvalidSolutionIds):
+        pass
+
+
+    @abstractmethod
+    def raise_solutions_not_belongs_to_question_exception(
+            self, error: SolutionIdsNotBelongsToQuestion
+        ):
+        pass
+
+
+    @abstractmethod
+    def get_create_solutions_response(
+            self,
+            question_id: int,
+            solution_with_question_id_dtos: \
+            List[SolutionWithQuestionIdDto]
+        ):
         pass

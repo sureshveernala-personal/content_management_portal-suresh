@@ -6,9 +6,11 @@ from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
 from typing import Dict, List
 from content_management_portal.dtos.dtos import SolutionDto
+from content_management_portal.interactors.base_create_solution_interactor\
+    import CreateSolutionsInteractor
 
 
-class CreateCleanSolutionsInteractor:
+class CreateCleanSolutionsInteractor(CreateSolutionsInteractor):
     def __init__(
             self,
             question_storage: QuestionStorageInterface,

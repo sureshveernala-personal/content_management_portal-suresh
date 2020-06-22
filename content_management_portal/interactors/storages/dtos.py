@@ -20,6 +20,15 @@ class SolutionDto:
 
 
 @dataclass
+class SolutionWithQuestionIdDto:
+    id: int
+    language: CodeLanguage
+    solution_content: str
+    file_name: str
+    question_id: int
+
+
+@dataclass
 class NewSolutionDto:
     language: CodeLanguage
     solution_content: str

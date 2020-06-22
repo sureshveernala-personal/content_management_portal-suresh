@@ -586,3 +586,79 @@ def solution_approach_with_question_id_dict(solution_approach_dict):
         "solution_approach": solution_approach_dict
     }
     return solution_approach_with_question_id_dict
+
+from content_management_portal.interactors.storages.dtos import SolutionDto,\
+    SolutionWithQuestionIdDto
+
+
+@pytest.fixture
+def solution_dtos():
+    solution_dtos = [
+        SolutionDto(
+            language="C", solution_content="string", file_name="string",
+            id=1
+        ),
+        SolutionDto(
+            language="C", solution_content="string", file_name="string",
+            id=None
+        )
+    ]
+    return solution_dtos
+
+
+@pytest.fixture
+def solution_dicts_with_ids():
+    solutions = [
+        {
+            "language": "C",
+            "solution_content": "string",
+            "file_name": "string",
+            "id": 1,
+        },
+        {
+            "language": "C",
+            "solution_content": "string",
+            "file_name": "string",
+            "id": 2,
+        }
+    ]
+    return solutions
+
+
+@pytest.fixture
+def solution_with_question_id_dicts(solution_dicts_with_ids):
+    solution_with_question_id_dicts = {
+        "question_id": 1,
+        "solutions": solution_dicts_with_ids
+    }
+    return solution_with_question_id_dicts
+
+
+@pytest.fixture
+def solution_dtos_with_ids():
+    solution_dtos = [
+        SolutionDto(
+            language="C", solution_content="string", file_name="string",
+            id=1
+        ),
+        SolutionDto(
+            language="C", solution_content="string", file_name="string",
+            id=2
+        )
+    ]
+    return solution_dtos
+
+
+@pytest.fixture
+def solution_with_question_id_dtos(solution_dtos_with_ids):
+    solution_dtos = [
+        SolutionWithQuestionIdDto(
+            language="C", solution_content="string", file_name="string",
+            id=1, question_id=1
+        ),
+        SolutionWithQuestionIdDto(
+            language="C", solution_content="string", file_name="string",
+            id=2, question_id=1
+        )
+    ]
+    return solution_dtos

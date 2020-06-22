@@ -25,19 +25,16 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
 
     def create_solutions_wrapper(self, presenter: PresenterInterface):
         try:
-            new_solution_dtos = \
+            solution_dict = \
                 self._prepare_solution_response(presenter=presenter)
         except InvalidQuestionId:
             presenter.raise_invalid_question_id_exception()
-        except InvalidSolutionIds:
-            presenter.raise_invalid_solution_id_exception()
-        except SolutionIdsNotBelongsToQuestion:
-            presenter.raise_solution_not_belongs_to_question_exception()
-
-        solution_dict = presenter.get_create_solutions_response(
-            solution_with_question_id_dtos=new_solution_dtos,
-            question_id=self.question_id
-        )
+        except InvalidSolutionIds as error:
+            presenter.raise_invalid_solution_ids_exception(error=error)
+        except SolutionIdsNotBelongsToQuestion as error:
+            presenter.raise_solutions_not_belongs_to_question_exception(
+                error=error
+            )
         return solution_dict
 
 
@@ -45,8 +42,8 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
         new_solution_dtos = self.create_solutions()
 
         solution_dict = presenter.get_create_solutions_response(
-            solution_with_question_id_dtos=new_solution_dtos,
-            question_id=self.question_id
+            question_id=self.question_id,
+            solution_with_question_id_dtos=new_solution_dtos
         )
         return solution_dict
 
@@ -79,7 +76,7 @@ class CreateSolutionsInteractor(QuestionValidationMixin):
         for solution_dto in self.solution_dtos:
             is_update = solution_dto.id is not None
             if is_update:
-                have_to_update_solution_ids.append(solution_dto.solution_id)
+                have_to_update_solution_ids.append(solution_dto.id)
                 have_to_update_solutions.append(solution_dto)
         return have_to_update_solutions, have_to_update_solution_ids
 
