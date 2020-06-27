@@ -22,4 +22,3 @@ class TestCase(models.Model):
     score = models.IntegerField(validators=[validate_postive])
     is_hidden = models.BooleanField()
     created_at = models.DateTimeField(auto_now=True)
-

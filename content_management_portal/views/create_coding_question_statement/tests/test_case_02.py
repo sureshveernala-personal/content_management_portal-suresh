@@ -1,30 +1,24 @@
 """
-Create SolutionApproach with invalid Question Id
+test for update existing question with invalid question_id
 """
 
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
-from content_management_portal.utils.custom_test_utils import CustomTestUtils
-
 
 REQUEST_BODY = """
 {
-    "title": "string",
-    "description": {
+    "question_id": 1,
+    "short_text": "string",
+    "problem_description": {
         "content": "string",
         "content_type": "TEXT"
-    },
-    "complexity_analysis": {
-        "content": "string",
-        "content_type": "TEXT"
-    },
-    "solution_approach_id": 1
+    }
 }
 """
 
 TEST_CASE = {
     "request": {
-        "path_params": {"question_id": "1234"},
+        "path_params": {},
         "query_params": {},
         "header_params": {},
         "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["superuser"], "type": "oauth2"}},
@@ -33,16 +27,17 @@ TEST_CASE = {
 }
 
 
-class TestCase01CreateCodingQuestionSolutionApproachAPITestCase(CustomTestUtils):
+class TestCase02CreateCodingQuestionStatementAPITestCase(CustomAPITestCase):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
     url_suffix = URL_SUFFIX
     test_case_dict = TEST_CASE
-    
-    def setupUser(self, username: str, password: str):
-        super(TestCase01CreateCodingQuestionSolutionApproachAPITestCase, self)\
-            .setupUser(username=username, password=password)
+
+    def setupUser(self, username, password):
+        super(TestCase02CreateCodingQuestionStatementAPITestCase, self)\
+        .setupUser(username=username, password=password)
+
 
     def test_case(self):
         self.default_test_case() # Returns response object.

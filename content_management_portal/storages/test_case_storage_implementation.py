@@ -56,7 +56,6 @@ class TestCaseStorageImplementation(TestCaseStorageInterface):
         ) -> int:
         test_case_id = test_case_details.test_case_id
         test_case = TestCase.objects.get(id=test_case_id)
-        test_case.test_case_number = test_case_details.test_case_number
         test_case.input = test_case_details.input
         test_case.output = test_case_details.output
         test_case.score = test_case_details.score

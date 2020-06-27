@@ -55,7 +55,6 @@ class HintStorageImplementation(HintStorageInterface):
         ) -> int:
         hint_id = hint_details.hint_id
         hint = Hint.objects.get(id=hint_id)
-        hint.hint_number = hint_details.hint_number
         hint.content = hint_details.content
         hint.content_type = hint_details.content_type
         hint.title = hint_details.title

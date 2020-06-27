@@ -7,9 +7,9 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case status'] = 201
+snapshots['TestCase03CreateCodingQuestionStatementAPITestCase::test_case status'] = 201
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case body'] = {
+snapshots['TestCase03CreateCodingQuestionStatementAPITestCase::test_case body'] = {
     'problem_description': {
         'content': 'string',
         'content_type': 'TEXT'
@@ -18,7 +18,7 @@ snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case body'] 
     'short_text': 'string'
 }
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case header_params'] = {
+snapshots['TestCase03CreateCodingQuestionStatementAPITestCase::test_case header_params'] = {
     'content-language': [
         'Content-Language',
         'en'

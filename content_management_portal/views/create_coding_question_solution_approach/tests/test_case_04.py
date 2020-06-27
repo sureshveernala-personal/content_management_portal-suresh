@@ -1,5 +1,5 @@
 """
-Create SolutionApproach with invalid Question Id
+Create New SolutionApproach with valid details
 """
 
 from django_swagger_utils.utils.test import CustomAPITestCase
@@ -18,13 +18,13 @@ REQUEST_BODY = """
         "content": "string",
         "content_type": "TEXT"
     },
-    "solution_approach_id": 1
+    "solution_approach_id": null
 }
 """
 
 TEST_CASE = {
     "request": {
-        "path_params": {"question_id": "1234"},
+        "path_params": {"question_id": "1"},
         "query_params": {},
         "header_params": {},
         "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["superuser"], "type": "oauth2"}},
@@ -33,7 +33,7 @@ TEST_CASE = {
 }
 
 
-class TestCase01CreateCodingQuestionSolutionApproachAPITestCase(CustomTestUtils):
+class TestCase04CreateCodingQuestionSolutionApproachAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
@@ -41,8 +41,10 @@ class TestCase01CreateCodingQuestionSolutionApproachAPITestCase(CustomTestUtils)
     test_case_dict = TEST_CASE
     
     def setupUser(self, username: str, password: str):
-        super(TestCase01CreateCodingQuestionSolutionApproachAPITestCase, self)\
+        super(TestCase04CreateCodingQuestionSolutionApproachAPITestCase, self)\
             .setupUser(username=username, password=password)
+
+        self.create_questions()
 
     def test_case(self):
         self.default_test_case() # Returns response object.

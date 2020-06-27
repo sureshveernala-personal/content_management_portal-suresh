@@ -7,24 +7,21 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case status'] = 201
+snapshots['TestCase03CreateCodingQuestionSolutionApproachAPITestCase::test_case status'] = 400
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case body'] = {
-    'problem_description': {
-        'content': 'string',
-        'content_type': 'TEXT'
-    },
-    'question_id': 1,
-    'short_text': 'string'
+snapshots['TestCase03CreateCodingQuestionSolutionApproachAPITestCase::test_case body'] = {
+    'http_status_code': 400,
+    'res_status': 'SOLUTION_APPROACH_NOT_BELONG_TO_QUESTION',
+    'response': 'Solution Approach id not belong to question.'
 }
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case header_params'] = {
+snapshots['TestCase03CreateCodingQuestionSolutionApproachAPITestCase::test_case header_params'] = {
     'content-language': [
         'Content-Language',
         'en'
     ],
     'content-length': [
-        '112',
+        '143',
         'Content-Length'
     ],
     'content-type': [

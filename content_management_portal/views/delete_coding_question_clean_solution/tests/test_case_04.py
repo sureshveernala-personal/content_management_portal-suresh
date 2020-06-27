@@ -1,5 +1,5 @@
 """
-Create SolutionApproach with invalid Question Id
+Delete CleanSolution with valid details
 """
 
 from django_swagger_utils.utils.test import CustomAPITestCase
@@ -8,23 +8,12 @@ from content_management_portal.utils.custom_test_utils import CustomTestUtils
 
 
 REQUEST_BODY = """
-{
-    "title": "string",
-    "description": {
-        "content": "string",
-        "content_type": "TEXT"
-    },
-    "complexity_analysis": {
-        "content": "string",
-        "content_type": "TEXT"
-    },
-    "solution_approach_id": 1
-}
+{}
 """
 
 TEST_CASE = {
     "request": {
-        "path_params": {"question_id": "1234"},
+        "path_params": {"clean_solution_id": "1", "question_id": "1"},
         "query_params": {},
         "header_params": {},
         "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["superuser"], "type": "oauth2"}},
@@ -33,16 +22,18 @@ TEST_CASE = {
 }
 
 
-class TestCase01CreateCodingQuestionSolutionApproachAPITestCase(CustomTestUtils):
+class TestCase04DeleteCodingQuestionCleanSolutionAPITestCase(CustomTestUtils):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
     url_suffix = URL_SUFFIX
     test_case_dict = TEST_CASE
-    
+
     def setupUser(self, username: str, password: str):
-        super(TestCase01CreateCodingQuestionSolutionApproachAPITestCase, self)\
+        super(TestCase04DeleteCodingQuestionCleanSolutionAPITestCase, self)\
             .setupUser(username=username, password=password)
+
+        self.create_clean_solutions()
 
     def test_case(self):
         self.default_test_case() # Returns response object.

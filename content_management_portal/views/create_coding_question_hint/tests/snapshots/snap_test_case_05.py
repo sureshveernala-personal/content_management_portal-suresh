@@ -7,24 +7,28 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case status'] = 201
+snapshots['TestCase05CreateCodingQuestionHintAPITestCase::test_case status'] = 201
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case body'] = {
-    'problem_description': {
-        'content': 'string',
-        'content_type': 'TEXT'
+snapshots['TestCase05CreateCodingQuestionHintAPITestCase::test_case body'] = {
+    'hint': {
+        'description': {
+            'content': 'string',
+            'content_type': 'TEXT'
+        },
+        'hint_id': 1,
+        'hint_number': 1,
+        'title': 'string'
     },
-    'question_id': 1,
-    'short_text': 'string'
+    'question_id': '1'
 }
 
-snapshots['TestCase01CreateCodingQuestionStatementAPITestCase::test_case header_params'] = {
+snapshots['TestCase05CreateCodingQuestionHintAPITestCase::test_case header_params'] = {
     'content-language': [
         'Content-Language',
         'en'
     ],
     'content-length': [
-        '112',
+        '143',
         'Content-Length'
     ],
     'content-type': [

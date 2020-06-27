@@ -1,5 +1,5 @@
 """
-# TODO: Update test case description
+Test Create RoughSolution with invalid Question id
 """
 
 from django_swagger_utils.utils.test import CustomAPITestCase
@@ -33,6 +33,12 @@ class TestCase01CreateCodingQuestionRoughSolutionsAPITestCase(CustomAPITestCase)
     request_method = REQUEST_METHOD
     url_suffix = URL_SUFFIX
     test_case_dict = TEST_CASE
+
+
+    def setupUser(self, username: str, password: str):
+        super(TestCase01CreateCodingQuestionRoughSolutionsAPITestCase, self)\
+        .setupUser(username=username, password=password)
+
 
     def test_case(self):
         self.default_test_case() # Returns response object.
