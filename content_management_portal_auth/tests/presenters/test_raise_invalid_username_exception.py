@@ -1,5 +1,5 @@
 import pytest
-from content_management_portal.presenters.presenter_implementation import\
+from content_management_portal_auth.presenters.presenter_implementation import\
     PresenterImplementation
 from django_swagger_utils.drf_server.exceptions import NotFound
 

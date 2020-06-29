@@ -17,7 +17,7 @@ TEST_CASE = {
         "path_params": {},
         "query_params": {},
         "header_params": {},
-        "securities": {"oauth": {"tokenUrl": "http://auth.ibtspl.com/oauth2/", "flow": "password", "scopes": ["superuser"], "type": "oauth2"}},
+        "securities": {},
         "body": REQUEST_BODY,
     },
 }

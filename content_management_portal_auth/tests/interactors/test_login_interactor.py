@@ -1,18 +1,18 @@
 from unittest.mock import create_autospec, patch
 import pytest
 from django_swagger_utils.drf_server.exceptions import NotFound, Forbidden
-from content_management_portal.interactors.storages.\
+from content_management_portal_auth.interactors.storages.\
     user_storage_interface import UserStorageInterface
-from content_management_portal.interactors.presenters.presenter_interface\
+from content_management_portal_auth.interactors.presenters.presenter_interface\
     import PresenterInterface
-from content_management_portal.interactors.login_interactor\
+from content_management_portal_auth.interactors.login_interactor\
     import LoginInteractor
 from common.oauth2_storage import OAuth2SQLStorage
 from common.oauth_user_auth_tokens_service import\
     OAuthUserAuthTokensService
 from common.dtos import UserAuthTokensDTO
 import datetime
-from content_management_portal.exceptions.exceptions import InvalidPassword
+from content_management_portal_auth.exceptions.exceptions import InvalidPassword
 
 
 @pytest.mark.django_db

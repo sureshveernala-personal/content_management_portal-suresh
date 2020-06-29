@@ -82,7 +82,7 @@
             "schema": {
                 "$ref": "#/definitions/AccesToken"
             }
-        }
+        },
         "InvalidUserResponse": {
             "description": "User not in the data."
         },

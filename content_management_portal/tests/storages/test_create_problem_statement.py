@@ -7,7 +7,7 @@ import pytest
 
 @pytest.mark.django_db
 def test_create_problem_statement_return_question_dto(
-        user, question_dto, description_dto
+        question_dto, description_dto
     ):
     # Arrange
     user_id = 1

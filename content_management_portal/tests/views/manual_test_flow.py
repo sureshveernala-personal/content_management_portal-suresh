@@ -1,7 +1,8 @@
 import requests
 from django_swagger_utils.drf_server.exceptions import NotFound, BadRequest,\
     Forbidden
-from content_management_portal.models import User, Question, RoughSolution
+from content_management_portal.models import Question, RoughSolution
+from content_management_portal_auth.models import User
 import json
 from django.db import connection
 
@@ -15,7 +16,7 @@ def manual_test_flow_of_operations():
     # when no user
     user_data = '{"username":"suresh","password": "123"}'
     response = requests.post(
-        url='http://localhost:8080/api/content_management_portal/login/v1/',
+        url='http://localhost:8080/api/content_management_portal_auth/login/v1/',
         headers={
             "content-type":"application/json",
         },
@@ -26,14 +27,14 @@ def manual_test_flow_of_operations():
 
     # getting acces token
     User.objects.create_user(username="suresh", password="123")
-    access_token_dto = requests.post(
-        url='http://localhost:8080/api/content_management_portal/login/v1/',
+    access_token_dict = requests.post(
+        url='http://localhost:8080/api/content_management_portal_auth/login/v1/',
         headers={
             "content-type":"application/json",
         },
         data=user_data
     ).content
-    access_token_dict = json.loads(access_token_dto)
+    access_token_dict = json.loads(access_token_dict)
     print(access_token_dict)
     print()
     access_token = access_token_dict['access_token']

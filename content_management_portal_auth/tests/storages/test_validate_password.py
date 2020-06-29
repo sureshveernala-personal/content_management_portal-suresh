@@ -1,7 +1,7 @@
-from content_management_portal.storages.user_storage_implementation import \
+from content_management_portal_auth.storages.user_storage_implementation import \
     UserStorageImplementation
 import pytest
-from content_management_portal.exceptions.exceptions import InvalidPassword
+from content_management_portal_auth.exceptions.exceptions import InvalidPassword
 
 @pytest.mark.django_db
 def test_is_valid_password_when_not_valid_raises_error(user_admin):

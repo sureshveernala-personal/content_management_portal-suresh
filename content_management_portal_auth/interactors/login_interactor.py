@@ -5,7 +5,7 @@ from content_management_portal_auth.interactors.presenters.presenter_interface \
 from common.oauth2_storage import OAuth2SQLStorage
 from common.oauth_user_auth_tokens_service import\
     OAuthUserAuthTokensService
-from content_management_portal.exceptions.exceptions import InvalidPassword
+from content_management_portal_auth.exceptions.exceptions import InvalidPassword
 
 
 class LoginInteractor:

@@ -9,7 +9,7 @@ from content_management_portal.interactors.storages.dtos import  StatementDto,\
 
 @pytest.mark.django_db
 def test_update_problem_stament_return_question_dto(
-        user, question, updated_question_dto, updated_description_dto
+        question, updated_question_dto, updated_description_dto
     ):
     # Arrange
     user_id = 1

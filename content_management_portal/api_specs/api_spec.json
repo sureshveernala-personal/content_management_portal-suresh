@@ -32,39 +32,6 @@
         }
     },
     "definitions": {
-        "UserDetails": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "username",
-                "password"
-            ]
-        },
-        "AccesToken": {
-            "type": "object",
-            "properties": {
-                "user_id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "access_token": {
-                    "type": "string"
-                },
-                "refresh_token": {
-                    "type": "string"
-                },
-                "expires_in": {
-                    "type": "string"
-                }
-            }
-        },
         "Description": {
             "type": "object",
             "properties": {
@@ -729,14 +696,6 @@
         }
     },
     "parameters": {
-        "LoginParameter": {
-            "name": "Login",
-            "in": "body",
-            "description": "data required to login the user",
-            "schema": {
-                "$ref": "#/definitions/UserDetails"
-            }
-        },
         "QuestionIdParameter": {
             "name": "question_id",
             "in": "path",
@@ -867,12 +826,6 @@
         }
     },
     "responses": {
-        "LoginResponse": {
-            "description": "Login response",
-            "schema": {
-                "$ref": "#/definitions/AccesToken"
-            }
-        },
         "CreateCodingQuestionStatementResponse": {
             "description": "Coding Question Statement created",
             "schema": {
@@ -933,9 +886,6 @@
         "InvalidUserResponse": {
             "description": "User not in the data."
         },
-        "InvalidPassword": {
-            "description": "Password is not valid."
-        },
         "InvalidQuestionResponse": {
             "description": "Question not in the data."
         },
@@ -953,22 +903,6 @@
         }
     },
     "paths": {
-        "/login/v1/": {
-            "post": {
-                "operationId": "Login",
-                "summary": "Login the user",
-                "description": "Login the user and return access token",
-                "security": [],
-                "parameters": [{
-                    "$ref": "#/parameters/LoginParameter"
-                }],
-                "responses": {
-                    "201": {
-                        "$ref": "#/responses/LoginResponse"
-                    }
-                }
-            }
-        },
         "/coding_questions/statement/v1/": {
             "post": {
                 "operationId": "create_coding_question_statement",

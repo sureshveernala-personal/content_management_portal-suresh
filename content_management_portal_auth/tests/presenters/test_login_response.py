@@ -1,4 +1,4 @@
-from content_management_portal.presenters.presenter_implementation import\
+from content_management_portal_auth.presenters.presenter_implementation import\
     PresenterImplementation
 from common.dtos import UserAuthTokensDTO
 import datetime
