@@ -1,0 +1,111 @@
+{
+    "swagger": "2.0",
+    "host": "localhost:8080",
+    "basePath": "/api/content_management_portal_auth/",
+    "info": {
+        "version": "1.0.0",
+        "title": "Content Management Portal Auth",
+        "description": "API for Content Management Portal Auth"
+    },
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users",
+                "superuser": "super user permission"
+            },
+            "type": "oauth2"
+        }
+    },
+    "definitions": {
+        "UserDetails": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "username",
+                "password"
+            ]
+        },
+        "AccesToken": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "expires_in": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "parameters": {
+        "LoginParameter": {
+            "name": "Login",
+            "in": "body",
+            "description": "data required to login the user",
+            "schema": {
+                "$ref": "#/definitions/UserDetails"
+            }
+        }
+    },
+    "responses": {
+        "LoginResponse": {
+            "description": "Login response",
+            "schema": {
+                "$ref": "#/definitions/AccesToken"
+            }
+        }
+        "InvalidUserResponse": {
+            "description": "User not in the data."
+        },
+        "InvalidPassword": {
+            "description": "Password is not valid."
+        }
+    },
+    "paths": {
+        "/login/v1/": {
+            "post": {
+                "operationId": "Login",
+                "summary": "Login the user",
+                "description": "Login the user and return access token",
+                "security": [],
+                "parameters": [{
+                    "$ref": "#/parameters/LoginParameter"
+                }],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/LoginResponse"
+                    }
+                }
+            }
+        }
+    }
+}

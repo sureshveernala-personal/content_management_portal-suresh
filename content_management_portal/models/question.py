@@ -4,9 +4,7 @@ from .user import User
 
 
 class Question(models.Model):
-    created_by = models.ForeignKey(
-        User,on_delete = models.CASCADE,related_name="questions"
-    )
+    created_by = models.IntegerField()
     short_text = models.CharField(max_length=100)
     content = models.TextField()
     choices = [
