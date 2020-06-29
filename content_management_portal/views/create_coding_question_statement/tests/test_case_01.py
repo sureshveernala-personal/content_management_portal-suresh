@@ -1,5 +1,5 @@
 """
-# TODO: Update test case description
+test for creating new question
 """
 
 from django_swagger_utils.utils.test import CustomAPITestCase
@@ -7,11 +7,11 @@ from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 
 REQUEST_BODY = """
 {
-    "question_id": 1,
+    "question_id": null,
     "short_text": "string",
     "problem_description": {
         "content": "string",
-        "content_type": "Text"
+        "content_type": "TEXT"
     }
 }
 """
@@ -33,6 +33,11 @@ class TestCase01CreateCodingQuestionStatementAPITestCase(CustomAPITestCase):
     request_method = REQUEST_METHOD
     url_suffix = URL_SUFFIX
     test_case_dict = TEST_CASE
+
+    def setupUser(self, username, password):
+        super(TestCase01CreateCodingQuestionStatementAPITestCase, self)\
+        .setupUser(username=username, password=password)
+
 
     def test_case(self):
         self.default_test_case() # Returns response object.

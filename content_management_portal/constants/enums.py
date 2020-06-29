@@ -16,3 +16,11 @@ class DescriptionType(BaseEnumClass, enum.Enum):
     text = "TEXT"
     html = "HTML"
     mark_down = "MARKDOWN"
+
+
+CodeLanguageList = [code_language.value for code_language in CodeLanguage]
+
+
+DescriptionTypeList = [
+    description_type.value for description_type in DescriptionType
+]
