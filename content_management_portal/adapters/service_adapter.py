@@ -22,7 +22,8 @@ class ServicesAdapter():
     def get_user_user_service(self):
         from content_management_portal.adapters.user_service import\
         UserService
-        return UserService()
+        user_service = UserService()
+        return user_service
 
 
 def get_service_adapter():
