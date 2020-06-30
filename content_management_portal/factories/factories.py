@@ -1,18 +1,18 @@
 from datetime import datetime
 import factory
 from content_management_portal.models import Question, CleanSolution,\
-    Hint, PrefilledCode, RoughSolution, SolutionApproach, TestCase, User
+    Hint, PrefilledCode, RoughSolution, SolutionApproach, TestCase
 from content_management_portal.constants.enums import DescriptionType,\
     CodeLanguage, DescriptionTypeList, CodeLanguageList
 
 
-class UserFactory(factory.django.DjangoModelFactory):
+# class UserFactory(factory.django.DjangoModelFactory):
 
-    class Meta:
-        model = User
+#     class Meta:
+#         model = User
 
-    username = factory.Sequence(lambda number: f"user{number+1}")
-    name = factory.LazyAttribute(lambda obj: obj.username)
+#     username = factory.Sequence(lambda number: f"user{number+1}")
+#     name = factory.LazyAttribute(lambda obj: obj.username)
 
 
 class QuestionFactory(factory.django.DjangoModelFactory):
@@ -20,7 +20,7 @@ class QuestionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Question
 
-    created_by = factory.SubFactory(UserFactory)
+    created_by_id = factory.Sequence(lambda number: number+1)
     short_text = factory.Sequence(lambda number: f"short_text_{number+1}")
     content = factory.Sequence(lambda number: f"content_{number+1}")
     content_type = factory.Iterator(DescriptionTypeList)

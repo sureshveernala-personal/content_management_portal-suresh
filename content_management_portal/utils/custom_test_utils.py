@@ -2,17 +2,13 @@ from django_swagger_utils.utils.test import CustomAPITestCase
 from freezegun import freeze_time
 
 from content_management_portal.models import Question, CleanSolution,\
-    Hint, PrefilledCode, RoughSolution, SolutionApproach, TestCase, User
+    Hint, PrefilledCode, RoughSolution, SolutionApproach, TestCase
 from content_management_portal.factories.factories import QuestionFactory,\
     CleanSolutionFactory, HintFactory, PrefilledCodeFactory,\
-    RoughSolutionFactory, SolutionApproachFactory, TestCaseFactory, UserFactory
+    RoughSolutionFactory, SolutionApproachFactory, TestCaseFactory
 
 
 class CustomTestUtils(CustomAPITestCase):
-
-    def create_user(self):
-        UserFactory()
-
 
     @freeze_time('2020-1-1')
     def create_questions(self):

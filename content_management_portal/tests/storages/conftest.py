@@ -421,7 +421,7 @@ def updted_test_case_with_question_id_dto(updated_test_case_dto):
         output="new_output",
         score=10,
         is_hidden=False,
-        test_case_number=2
+        test_case_number=1
     )
     return test_case_with_question_id_dto
 
@@ -638,7 +638,7 @@ def updted_hint_with_question_id_dto(updated_hint_dto):
         title="title",
         content="new_content",
         content_type=DescriptionType.html.value,
-        hint_number=2
+        hint_number=1
     )
     return hint_with_question_id_dto
 

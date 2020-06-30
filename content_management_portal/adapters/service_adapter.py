@@ -15,3 +15,15 @@ class ServiceAdapter(BaseAdapterClass):
     #         IBUsersServiceAdapter
     #     return IBUsersServiceAdapter(access_token=self.access_token,
     #                                  user=self.user, source=self.source)
+
+class ServicesAdapter():
+
+    @property
+    def get_user_user_service(self):
+        from content_management_portal.adapters.user_service import\
+        UserService
+        return UserService()
+
+
+def get_service_adapter():
+    return ServicesAdapter()
