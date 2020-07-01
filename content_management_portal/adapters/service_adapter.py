@@ -27,5 +27,4 @@ class ServicesAdapter():
 
 
 def get_service_adapter():
-    service_adapter = ServicesAdapter()
-    return service_adapter
+    return ServicesAdapter()
