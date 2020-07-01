@@ -1,5 +1,5 @@
 """
-Test Login with valid details
+Test Login with invalid password
 """
 
 from django_swagger_utils.utils.test import CustomAPITestCase
@@ -15,7 +15,7 @@ from datetime import datetime
 REQUEST_BODY = """
 {
     "username": "suresh",
-    "password": "1234"
+    "password": "12345"
 }
 """
 
@@ -30,7 +30,7 @@ TEST_CASE = {
 }
 
 
-class TestCase01LoginAPITestCase(CustomAPITestCase):
+class TestCase03LoginAPITestCase(CustomAPITestCase):
     app_name = APP_NAME
     operation_name = OPERATION_NAME
     request_method = REQUEST_METHOD
@@ -47,18 +47,6 @@ class TestCase01LoginAPITestCase(CustomAPITestCase):
         )
 
 
-    @patch("common.oauth_user_auth_tokens_service.OAuthUserAuthTokensService.create_user_auth_tokens")
-    def test_case(self, create_user_auth_tokens):
-        access_token_dto = UserAuthTokensDTO(
-            user_id=1,
-            access_token='PbWOleEjL99tOoUPfPY3NR2rA9mphk',
-            refresh_token='sFajX39Y1Ye9AjKUd2zKn3Yf4syryD',
-            expires_in=datetime(2337, 4, 20, 2, 14, 3, 493790)
-        )
-        create_user_auth_tokens.return_value = access_token_dto
+    def test_case(self):
         self.setupUser()
-
-        access_token_json = self.default_test_case().content
-
-        access_token_dict = json.loads(access_token_json)
-        self.assert_match_snapshot(access_token_dict)
+        self.default_test_case()
