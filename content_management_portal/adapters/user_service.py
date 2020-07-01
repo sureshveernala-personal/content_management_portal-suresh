@@ -8,8 +8,7 @@ class UserService:
     def interface(self):
         from content_management_portal_auth.interfaces.service_interface \
             import ServiceInterface
-        service_interface = ServiceInterface()
-        return service_interface
+        return ServiceInterface()
 
 
     def get_user_dtos(self, user_ids: List[int]):
