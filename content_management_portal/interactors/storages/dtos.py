@@ -6,6 +6,12 @@ from content_management_portal.constants.enums import DescriptionType,\
 
 
 @dataclass
+class UserDto:
+    username: str
+    user_id: int
+
+
+@dataclass
 class DescriptionDto:
     content: str
     content_type: DescriptionType

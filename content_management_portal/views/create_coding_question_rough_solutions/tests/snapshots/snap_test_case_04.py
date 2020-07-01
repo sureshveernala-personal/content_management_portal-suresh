@@ -2,7 +2,7 @@
 # snapshottest: v1 - https://goo.gl/zC4yUc
 from __future__ import unicode_literals
 
-from snapshottest import Snapshot
+from snapshottest import GenericRepr, Snapshot
 
 
 snapshots = Snapshot()
@@ -49,3 +49,19 @@ snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case he
         'X-Frame-Options'
     ]
 }
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 1'] = 'PYTHON'
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 2'] = 'string'
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 3'] = 'string'
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 4'] = GenericRepr('datetime.datetime(2020, 1, 1, 0, 0)')
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 5'] = GenericRepr('<Question: Question object (1)>')
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 6'] = 'PYTHON'
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 7'] = 'string'
+
+snapshots['TestCase04CreateCodingQuestionRoughSolutionsAPITestCase::test_case 8'] = 'string'

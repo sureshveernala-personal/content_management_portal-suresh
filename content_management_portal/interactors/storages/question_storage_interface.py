@@ -3,7 +3,7 @@ from abc import abstractmethod
 from content_management_portal.dtos.dtos import DescriptionDto
 from content_management_portal.interactors.storages.dtos \
     import QuestionStatusDto, QuestionDto
-from typing import Tuple
+from typing import Tuple, List
 
 
 class QuestionStorageInterface(ABC):
@@ -47,10 +47,15 @@ class QuestionStorageInterface(ABC):
 
 
     @abstractmethod
-    def get_total_number_of_questions(self):
+    def get_total_number_of_questions(self) -> int:
         pass
 
 
     @abstractmethod
-    def get_all_question_ids(self):
+    def get_all_question_ids(self) -> List[int]:
+        pass
+
+
+    @abstractmethod
+    def get_question_user_id(self, question_id: int) -> int:
         pass

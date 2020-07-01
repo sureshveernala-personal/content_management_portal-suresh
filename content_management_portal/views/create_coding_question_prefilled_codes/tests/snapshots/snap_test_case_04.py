@@ -65,7 +65,3 @@ snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 6'
 snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 7'] = 'string'
 
 snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 8'] = 'string'
-
-snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 9'] = GenericRepr('datetime.datetime(2020, 6, 27, 14, 16, 30, 67507)')
-
-snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 10'] = GenericRepr('<Question: Question object (1)>')

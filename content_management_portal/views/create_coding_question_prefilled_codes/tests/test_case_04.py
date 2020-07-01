@@ -61,5 +61,5 @@ class TestCase04CreateCodingQuestionPrefilledCodesAPITestCase(CustomTestUtils):
         self.assert_match_snapshot(prefilled_code_2.language)
         self.assert_match_snapshot(prefilled_code_2.file_name)
         self.assert_match_snapshot(prefilled_code_2.solution_content)
-        self.assert_match_snapshot(prefilled_code_2.created_at)
-        self.assert_match_snapshot(prefilled_code_2.question)
+        # self.assert_match_snapshot(prefilled_code_2.created_at)
+        # self.assert_match_snapshot(prefilled_code_2.question)

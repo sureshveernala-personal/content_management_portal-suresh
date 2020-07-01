@@ -9,7 +9,8 @@ from content_management_portal.interactors.storages.dtos\
     RoughSolutionDto, TestCaseWithQuestionIdDto,\
     TestCaseDto, QuestionDto, PrefilledCodeWithQuestionIdDto,\
     PrefilledCodeDto, CleanSolutionWithQuestionIdDto, CleanSolutionDto,\
-    HintWithQuestionIdDto, DescriptionDto, HintDto, SolutionApproachDto
+    HintWithQuestionIdDto, DescriptionDto, HintDto, SolutionApproachDto,\
+    UserDto
 from content_management_portal.constants.exception_messages import\
     INVALID_QUESTION_ID, INVALID_ROUGH_SOLUTION_ID,\
     ROUGH_SOLUTION_NOT_BELONG_TO_QUESTION, INVALID_USER_NAME, INVALID_PASSWORD,\
@@ -285,6 +286,20 @@ class PresenterImplementation(PresenterInterface):
 
     def raise_can_not_create_more_then_one_question(self):
         raise BadRequest(*CAN_NOT_CREATE_MORE_THEN_ONE_SOLUTION_APPROACH)
+
+
+    def get_question_user_response(self, user_dto: UserDto):
+        user_dict = self._get_user_dict(user_dto=user_dto)
+        return user_dict
+
+
+    @staticmethod
+    def _get_user_dict(user_dto: UserDto):
+        user_dict = {
+            "username": user_dto.username,
+            "user_id": user_dto.user_id
+        }
+        return user_dict
 
 
     def _get_statement_dict(self, question: QuestionDto) -> Dict:

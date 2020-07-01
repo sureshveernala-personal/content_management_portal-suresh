@@ -99,6 +99,12 @@ class QuestionStorageImplementation(QuestionStorageInterface):
         return list(question_ids)
 
 
+    def get_question_user_id(self, question_id: int) -> int:
+        question_user_id = \
+            Question.objects.get(id=question_id).created_by_id
+        return question_user_id
+
+
     def _get_question_status_dto(self, question: Question):
         question_status_dto = QuestionStatusDto(
             question_id=question.id,

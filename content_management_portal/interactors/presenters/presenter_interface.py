@@ -6,7 +6,7 @@ from content_management_portal.interactors.storages.dtos\
     PrefilledCodeWithQuestionIdDto, CleanSolutionWithQuestionIdDto,\
     HintWithQuestionIdDto, HintDto, SolutionApproachDto, RoughSolutionDto,\
     CleanSolutionDto, TestCaseDto, PrefilledCodeDto,\
-    RoughSolutionWithQuestionIdDto, QuestionStatusDto
+    RoughSolutionWithQuestionIdDto, QuestionStatusDto, UserDto
 
 
 class PresenterInterface(ABC):
@@ -184,4 +184,9 @@ class PresenterInterface(ABC):
 
     @abstractmethod
     def raise_can_not_create_more_then_one_question(self):
+        pass
+
+
+    @abstractmethod
+    def get_question_user_response(self, user_dto: UserDto):
         pass

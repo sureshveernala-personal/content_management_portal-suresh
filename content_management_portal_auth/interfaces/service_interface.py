@@ -1,7 +1,7 @@
 from typing import List
 from content_management_portal_auth.storages.user_storage_implementation \
     import UserStorageImplementation
-from content_management_portal_auth.interactors.get_user_details_interactor\
+from content_management_portal_auth.interactors.get_users_details_interactor\
     import GetUsersDetailsInteractor
 
 
