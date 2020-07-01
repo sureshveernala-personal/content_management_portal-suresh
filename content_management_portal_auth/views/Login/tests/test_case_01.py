@@ -15,7 +15,7 @@ from datetime import datetime
 REQUEST_BODY = """
 {
     "username": "suresh",
-    "password": "1234"
+    "password": "123456"
 }
 """
 
@@ -39,7 +39,7 @@ class TestCase01LoginAPITestCase(CustomAPITestCase):
 
     def setupUser(self):
         username="suresh"
-        password = "1234"
+        password = "123456"
         User.objects.create_superuser(
             username=username,
             password=password,
