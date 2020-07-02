@@ -56,7 +56,7 @@ snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 2'
 
 snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 3'] = 'string'
 
-snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 4'] = GenericRepr('datetime.datetime(2020, 1, 1, 0, 0)')
+snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 4'] = GenericRepr('FakeDatetime(2020, 1, 1, 0, 0)')
 
 snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 5'] = GenericRepr('<Question: Question object (1)>')
 
@@ -65,3 +65,7 @@ snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 6'
 snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 7'] = 'string'
 
 snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 8'] = 'string'
+
+snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 9'] = GenericRepr('FakeDatetime(2020, 1, 1, 0, 0)')
+
+snapshots['TestCase04CreateCodingQuestionPrefilledCodesAPITestCase::test_case 10'] = GenericRepr('<Question: Question object (1)>')

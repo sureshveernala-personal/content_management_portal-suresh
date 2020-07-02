@@ -6,15 +6,6 @@ from content_management_portal.constants.enums import DescriptionType,\
     CodeLanguage, DescriptionTypeList, CodeLanguageList
 
 
-# class UserFactory(factory.django.DjangoModelFactory):
-
-#     class Meta:
-#         model = User
-
-#     username = factory.Sequence(lambda number: f"user{number+1}")
-#     name = factory.LazyAttribute(lambda obj: obj.username)
-
-
 class QuestionFactory(factory.django.DjangoModelFactory):
 
     class Meta:

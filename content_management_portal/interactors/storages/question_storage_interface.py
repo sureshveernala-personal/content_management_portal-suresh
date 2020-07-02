@@ -1,9 +1,9 @@
 from abc import ABC
 from abc import abstractmethod
+from typing import Tuple, List
 from content_management_portal.dtos.dtos import DescriptionDto
 from content_management_portal.interactors.storages.dtos \
     import QuestionStatusDto, QuestionDto
-from typing import Tuple, List
 
 
 class QuestionStorageInterface(ABC):

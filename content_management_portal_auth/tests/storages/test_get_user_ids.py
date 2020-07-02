@@ -4,7 +4,7 @@ from content_management_portal_auth.storages.user_storage_implementation import 
 
 
 @pytest.mark.django_db
-def test_get_user_ids(user):
+def test_get_user_ids(create_users):
     # Arrange
     user_ids = [1, 2, 3, 4]
     storage = UserStorageImplementation()

@@ -5,7 +5,7 @@ from content_management_portal_auth.interactors.storages.dtos import\
 
 
 @pytest.fixture
-def user():
+def create_users():
     users_list = [
         {
             'username': 'user1',
@@ -33,12 +33,12 @@ def user():
     User.objects.bulk_create(user_objs_list)
 
 @pytest.fixture
-def user_admin():
+def create_user_admin():
     User.objects.create_user(username="user1", password = "123")
 
 
 @pytest.fixture
-def user_dtos():
+def create_user_dtos():
     user_dtos = [
         UserDto(username="user1", user_id=1),
         UserDto(username="user2", user_id=2),

@@ -4,7 +4,7 @@ import pytest
 from content_management_portal_auth.exceptions.exceptions import InvalidPassword
 
 @pytest.mark.django_db
-def test_is_valid_password_when_not_valid_raises_error(user_admin):
+def test_is_valid_password_when_not_valid_raises_error(create_user_admin):
     # Arrange
     username = "user1"
     password = "124"
@@ -18,7 +18,7 @@ def test_is_valid_password_when_not_valid_raises_error(user_admin):
 
 
 @pytest.mark.django_db
-def test_is_valid_password_when_valid(user_admin):
+def test_is_valid_password_when_valid(create_user_admin):
     # Arrange
     username = "user1"
     password = "123"

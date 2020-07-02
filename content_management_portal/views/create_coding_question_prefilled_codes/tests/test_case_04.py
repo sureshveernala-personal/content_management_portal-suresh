@@ -6,6 +6,7 @@ from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 from content_management_portal.utils.custom_test_utils import CustomTestUtils
 from content_management_portal.models import PrefilledCode
+from freezegun import freeze_time
 
 
 REQUEST_BODY = """
@@ -49,6 +50,7 @@ class TestCase04CreateCodingQuestionPrefilledCodesAPITestCase(CustomTestUtils):
 
         self.create_prefilled_codes()
 
+    @freeze_time('2020-1-1')
     def test_case(self):
         self.default_test_case()
         prefilled_code_1 = PrefilledCode.objects.get(id=1)
@@ -61,5 +63,5 @@ class TestCase04CreateCodingQuestionPrefilledCodesAPITestCase(CustomTestUtils):
         self.assert_match_snapshot(prefilled_code_2.language)
         self.assert_match_snapshot(prefilled_code_2.file_name)
         self.assert_match_snapshot(prefilled_code_2.solution_content)
-        # self.assert_match_snapshot(prefilled_code_2.created_at)
-        # self.assert_match_snapshot(prefilled_code_2.question)
+        self.assert_match_snapshot(prefilled_code_2.created_at)
+        self.assert_match_snapshot(prefilled_code_2.question)
