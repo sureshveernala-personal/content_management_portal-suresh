@@ -41,7 +41,7 @@ class TestCase01LoginAPITestCase(CustomAPITestCase):
         password = "123456"
         User.objects.create_user(
             username=username,
-            password=password
+            password=password,
         )
 
 
@@ -55,3 +55,5 @@ class TestCase01LoginAPITestCase(CustomAPITestCase):
         )
         create_user_auth_tokens.return_value = access_token_dto
         self.setupUser()
+
+        self.default_test_case()
