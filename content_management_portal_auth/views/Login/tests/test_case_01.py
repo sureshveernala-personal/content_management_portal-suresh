@@ -39,10 +39,9 @@ class TestCase01LoginAPITestCase(CustomAPITestCase):
     def setupUser(self):
         username="suresh"
         password = "123456"
-        User.objects.create_superuser(
+        User.objects.create_user(
             username=username,
-            password=password,
-            email=""
+            password=password
         )
 
 
