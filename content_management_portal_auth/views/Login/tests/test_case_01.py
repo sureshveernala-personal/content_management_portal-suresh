@@ -5,7 +5,6 @@ Test Login with valid details
 from django_swagger_utils.utils.test import CustomAPITestCase
 from . import APP_NAME, OPERATION_NAME, REQUEST_METHOD, URL_SUFFIX
 from content_management_portal_auth.models import User
-import json
 from freezegun import freeze_time
 from unittest.mock import patch
 from common.dtos import UserAuthTokensDTO
@@ -57,8 +56,3 @@ class TestCase01LoginAPITestCase(CustomAPITestCase):
         )
         create_user_auth_tokens.return_value = access_token_dto
         self.setupUser()
-
-        access_token_json = self.default_test_case().content
-
-        access_token_dict = json.loads(access_token_json)
-        self.assert_match_snapshot(access_token_dict)
