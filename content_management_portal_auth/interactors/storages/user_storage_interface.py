@@ -22,5 +22,5 @@ class UserStorageInterface(ABC):
 
 
     @abstractmethod
-    def get_users_details(self, user_ids: List[int]) -> UserDto:
+    def get_users_details(self, user_ids: List[int]) -> List[UserDto]:
         pass

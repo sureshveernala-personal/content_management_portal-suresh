@@ -38,10 +38,3 @@ snapshots['TestCase01LoginAPITestCase::test_case header_params'] = {
         'X-Frame-Options'
     ]
 }
-
-snapshots['TestCase01LoginAPITestCase::test_case 1'] = {
-    'access_token': 'PbWOleEjL99tOoUPfPY3NR2rA9mphk',
-    'expires_in': '2337-04-20 02:14:03.493790',
-    'refresh_token': 'sFajX39Y1Ye9AjKUd2zKn3Yf4syryD',
-    'user_id': 1
-}

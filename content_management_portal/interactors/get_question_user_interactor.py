@@ -1,9 +1,9 @@
+from typing import Dict, List
 from content_management_portal.interactors.storages.\
     question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface \
     import PresenterInterface
 from content_management_portal.exceptions.exceptions import InvalidQuestionId
-from typing import Dict, List
 from content_management_portal.adapters import service_adapter
 
 
