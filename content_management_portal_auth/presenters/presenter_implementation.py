@@ -7,6 +7,7 @@ from content_management_portal_auth.constants.exception_messages import\
     INVALID_USER_NAME, INVALID_PASSWORD, INVALID_USER_IDS
 from content_management_portal_auth.exceptions.exceptions import InvalidUserIds
 from content_management_portal_auth.interactors.storages.dtos import UserDto
+from content_management_portal_auth.constants.constants import DEFAULT_DATE_TIME_FORMAT
 
 
 class PresenterImplementation(PresenterInterface):
@@ -25,7 +26,7 @@ class PresenterImplementation(PresenterInterface):
             "access_token": access_token.access_token,
             "refresh_token": access_token.refresh_token,
             "expires_in": datetime.strftime(
-                access_token.expires_in, "%Y-%m-%d %H:%M:%S.%f"
+                access_token.expires_in, DEFAULT_DATE_TIME_FORMAT
             )
         }
         return access_token_dict

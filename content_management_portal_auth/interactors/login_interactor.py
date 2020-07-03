@@ -1,10 +1,10 @@
+from common.oauth2_storage import OAuth2SQLStorage
+from common.oauth_user_auth_tokens_service import\
+    OAuthUserAuthTokensService
 from content_management_portal_auth.interactors.storages.user_storage_interface import\
     UserStorageInterface
 from content_management_portal_auth.interactors.presenters.presenter_interface \
     import PresenterInterface
-from common.oauth2_storage import OAuth2SQLStorage
-from common.oauth_user_auth_tokens_service import\
-    OAuthUserAuthTokensService
 from content_management_portal_auth.exceptions.exceptions import InvalidPassword
 
 
