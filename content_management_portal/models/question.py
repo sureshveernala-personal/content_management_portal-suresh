@@ -1,6 +1,7 @@
 from django.db import models
 from content_management_portal.constants.enums import DescriptionType
 from .user import User
+from django.contrib import admin
 
 
 class Question(models.Model):
@@ -15,3 +16,8 @@ class Question(models.Model):
     ]
     content_type = models.CharField(max_length=100, choices=choices)
     created_at = models.DateTimeField(auto_now=True)
+
+
+    # def upper_case_name(self, obj):
+    #     return ("%s %s" % (obj.name, obj.birthday)).upper()
+    # upper_case_name.short_description = 'Name'

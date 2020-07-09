@@ -1,0 +1,17 @@
+[{
+        "fields": {
+            "firstname": "suresh",
+            "lastname": "v",
+            "username": "suresh vv"
+        },
+        "model": "content_management_portal.User"
+    },
+    {
+        "fields": {
+            "firstname": "suresh",
+            "lastname": "v",
+            "username": "suresh veernala"
+        },
+        "model": "content_management_portal.User"
+    }
+]
