@@ -693,6 +693,28 @@
             "required": [
                 "question_ids"
             ]
+        },
+        "InvalidQuestionId": {
+            "type": "object",
+            "properties": {
+                "response": {
+                    "type": "string"
+                },
+                "http_status_code": {
+                    "type": "integer"
+                },
+                "res_status": {
+                    "type": "string",
+                    "enum": [
+                        "INVALID_QUESTION_ID"
+                    ]
+                }
+            },
+            "required": [
+                "response",
+                "http_status_code",
+                "res_status"
+            ]
         }
     },
     "parameters": {
@@ -883,11 +905,11 @@
         "DeleteCodingQuestionsResponse": {
             "description": "Deleted coding questions"
         },
-        "InvalidUserResponse": {
-            "description": "User not in the data."
-        },
-        "InvalidQuestionResponse": {
-            "description": "Question not in the data."
+        "InvalidQuestionIdResponse": {
+            "description": "Question not in the data.",
+            "schema": {
+                "$ref": "#/definitions/InvalidQuestionId"
+            }
         },
         "InvalidRoughSolutionResponse": {
             "description": "Rough Solution not in the data."
@@ -919,6 +941,9 @@
                 "responses": {
                     "201": {
                         "$ref": "#/responses/CreateCodingQuestionStatementResponse"
+                    },
+                    "404": {
+                        "$ref": "#/responses/InvalidQuestionIdResponse"
                     }
                 }
             }

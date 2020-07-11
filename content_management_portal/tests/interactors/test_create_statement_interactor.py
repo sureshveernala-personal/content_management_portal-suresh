@@ -2,7 +2,7 @@ from unittest.mock import create_autospec
 from content_management_portal.interactors.storages.\
     question_storage_interface import QuestionStorageInterface
 from content_management_portal.interactors.presenters.presenter_interface\
-    import PresenterInterface
+    import CreateProblemStatementPresenterInterface
 from content_management_portal.interactors.create_problem_statement_interactor\
     import CreateProblemStatementInteractor
 from django_swagger_utils.drf_server.exceptions import NotFound
@@ -16,7 +16,7 @@ def test_create_statement_interactor_with_invalid_question_id_raises_error(
     short_text = "string"
     question_id =1
     question_storage = create_autospec(QuestionStorageInterface)
-    presenter = create_autospec(PresenterInterface)
+    presenter = create_autospec(CreateProblemStatementPresenterInterface)
     interactor = CreateProblemStatementInteractor(
         question_storage=question_storage,
         presenter=presenter
@@ -44,8 +44,10 @@ def test_create_statement_interactor_with_new_data_returns_question_id(
     # Arrange
     user_id = 1
     short_text = "string"
+    interactor_question_dto = question_dto
+    interactor_question_dto.question_id = None
     question_storage = create_autospec(QuestionStorageInterface)
-    presenter = create_autospec(PresenterInterface)
+    presenter = create_autospec(CreateProblemStatementPresenterInterface)
     interactor = CreateProblemStatementInteractor(
         question_storage=question_storage,
         presenter=presenter
@@ -64,8 +66,7 @@ def test_create_statement_interactor_with_new_data_returns_question_id(
 
     # Assert
     question_storage.create_problem_statement.assert_called_once_with(
-        user_id=user_id, short_text=short_text,
-        description=description_dto
+        user_id=user_id, question_dto=question_dto
     )
     presenter.get_create_problem_statement_response.assert_called_once_with(
         question_dto=question_dto
@@ -81,7 +82,7 @@ def test_create_statement_interactor_with_existing_question_id_returns_question_
     question_id = 1
     short_text = "string"
     question_storage = create_autospec(QuestionStorageInterface)
-    presenter = create_autospec(PresenterInterface)
+    presenter = create_autospec(CreateProblemStatementPresenterInterface)
     interactor = CreateProblemStatementInteractor(
         question_storage=question_storage,
         presenter=presenter
@@ -100,8 +101,7 @@ def test_create_statement_interactor_with_existing_question_id_returns_question_
 
     # Assert
     question_storage.update_problem_statement.assert_called_once_with(
-        user_id=user_id, short_text=short_text,
-        description=description_dto, question_id=question_id
+        user_id=user_id, question_dto=question_dto
     )
     presenter.get_create_problem_statement_response.assert_called_once_with(
         question_dto=question_dto

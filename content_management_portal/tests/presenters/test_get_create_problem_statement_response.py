@@ -1,12 +1,13 @@
 import pytest
+import json
 from content_management_portal.presenters.presenter_implementation import\
-    PresenterImplementation
+    CreateProblemStatementPresenterImplementation
 from django_swagger_utils.drf_server.exceptions import NotFound
 
 
 def test_get_create_problem_statement_response(question_dto, question_dict):
     # Arrange
-    presenter = PresenterImplementation()
+    presenter = CreateProblemStatementPresenterImplementation()
 
     # Act
     response = presenter.get_create_problem_statement_response(
@@ -14,4 +15,4 @@ def test_get_create_problem_statement_response(question_dto, question_dict):
     )
 
     # Assert
-    assert response == question_dict
+    assert json.loads(response.content) == question_dict

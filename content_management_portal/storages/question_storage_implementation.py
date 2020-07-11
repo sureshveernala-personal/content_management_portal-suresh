@@ -17,13 +17,11 @@ class QuestionStorageImplementation(QuestionStorageInterface):
 
 
     def create_problem_statement(
-            self,
-            user_id: int,
-            short_text: str,
-            description: DescriptionDto
+            self, user_id: int, question_dto: QuestionDto
         ) -> int:
-        content = description.content
-        content_type = description.content_type
+        content = question_dto.content
+        content_type = question_dto.content_type
+        short_text = question_dto.short_text
         question = Question.objects.create(
             created_by_id=user_id, short_text=short_text, content=content,
             content_type=content_type
@@ -33,18 +31,13 @@ class QuestionStorageImplementation(QuestionStorageInterface):
 
     def update_problem_statement(
             self,
-            user_id: int,
-            short_text: str,
-            description: DescriptionDto,
-            question_id: int
-        ) -> int:
-        content = description.content
-        content_type = description.content_type
-        question = Question.objects.get(id=question_id)
+            user_id: int, question_dto: QuestionDto
+        ) -> int:   
+        question = Question.objects.get(id=question_dto.question_id)
         question.created_by_id = user_id
-        question.short_text = short_text
-        question.content = content
-        question.content_type = content_type
+        question.short_text = question_dto.short_text
+        question.content = question_dto.content
+        question.content_type = question_dto.content_type
         question.save()
         return self._get_question_dto(question)
 

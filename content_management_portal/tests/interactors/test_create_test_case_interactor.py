@@ -10,36 +10,36 @@ from content_management_portal.interactors.presenters.presenter_interface\
 from content_management_portal.interactors.create_test_case_interactor\
     import CreateTestCaseInteractor
 
-
-def test_create_test_case_interactor_with_invalid_question_id_raises_error(
-        test_case_dict
-    ):
-    # Arrange
-    question_id = 1
-    test_case_storage = create_autospec(TestCaseStorageInterface)
-    question_storage = create_autospec(
-        QuestionStorageInterface
-    )
-    presenter = create_autospec(PresenterInterface)
-    interactor = CreateTestCaseInteractor(
-        test_case_storage=test_case_storage,
-        presenter=presenter,
-        question_storage=question_storage
-    )
-    test_case_storage.get_max_test_case_number.return_value = None
-    question_storage.is_valid_question_id.return_value = False
-    presenter.raise_invalid_question_id_exception.side_effect = NotFound
-
-    # Act
-    with pytest.raises(NotFound):
-        interactor.create_test_case(
-            question_id=question_id, test_case_details=test_case_dict
+class TestCreateTestCase:
+    def test_create_test_case_interactor_with_invalid_question_id_raises_error(
+            self, test_case_dict
+        ):
+        # Arrange
+        question_id = 1
+        test_case_storage = create_autospec(TestCaseStorageInterface)
+        question_storage = create_autospec(
+            QuestionStorageInterface
         )
-
-    # Assert
-    question_storage.is_valid_question_id.assert_called_once_with(
-        question_id=question_id
-    )
+        presenter = create_autospec(PresenterInterface)
+        interactor = CreateTestCaseInteractor(
+            test_case_storage=test_case_storage,
+            presenter=presenter,
+            question_storage=question_storage
+        )
+        test_case_storage.get_max_test_case_number.return_value = None
+        question_storage.is_valid_question_id.return_value = False
+        presenter.raise_invalid_question_id_exception.side_effect = NotFound
+    
+        # Act
+        with pytest.raises(NotFound):
+            interactor.create_test_case(
+                question_id=question_id, test_case_details=test_case_dict
+            )
+    
+        # Assert
+        question_storage.is_valid_question_id.assert_called_once_with(
+            question_id=question_id
+        )
 
 
 def test_create_test_case_interactor_with_invalid_test_case_id_raises_error(

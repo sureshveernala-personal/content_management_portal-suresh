@@ -13,6 +13,7 @@ def validate_postive(value):
         )
 
 class TestCase(models.Model):
+    __test__ = False
     question = models.ForeignKey(
         Question, related_name="test_cases", on_delete = models.CASCADE
     )

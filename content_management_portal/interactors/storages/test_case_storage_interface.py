@@ -7,6 +7,7 @@ from typing import List
 
 
 class TestCaseStorageInterface(ABC):
+    __test__ = False
 
     @abstractmethod
     def create_test_case(

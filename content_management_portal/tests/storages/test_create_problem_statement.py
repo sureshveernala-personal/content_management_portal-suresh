@@ -16,9 +16,7 @@ def test_create_problem_statement_return_question_dto(
 
     # Act
     response_dto = storage.create_problem_statement(
-        user_id=user_id,
-        short_text=short_text,
-        description=description_dto
+        user_id=user_id, question_dto=question_dto
     )
 
     # Assert

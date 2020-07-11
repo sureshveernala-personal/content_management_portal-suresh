@@ -1,5 +1,6 @@
 from abc import ABC
 from abc import abstractmethod
+from django.http import response
 from typing import List
 from content_management_portal.interactors.storages.dtos\
     import TestCaseWithQuestionIdDto, QuestionDto, \
@@ -9,24 +10,25 @@ from content_management_portal.interactors.storages.dtos\
     RoughSolutionWithQuestionIdDto, QuestionStatusDto, UserDto
 
 
+class CreateProblemStatementPresenterInterface(ABC):
+
+
+    @abstractmethod
+    def get_create_problem_statement_response(
+            self, question_dto: QuestionDto
+        ) -> response.HttpResponse:
+        pass
+
+
+    @abstractmethod
+    def raise_invalid_question_id_exception(self) -> response.HttpResponse:
+        pass
+
+
 class PresenterInterface(ABC):
-    @abstractmethod
-    def raise_invalid_username_exception(self):
-        pass
-
 
     @abstractmethod
-    def raise_invalid_password_exception(self):
-        pass
-
-
-    @abstractmethod
-    def login_response(self, access_token):
-        pass
-
-
-    @abstractmethod
-    def raise_invalid_question_id_exception(self):
+    def raise_invalid_question_id_exception(self) -> response.HttpResponse:
         pass
 
 
@@ -37,11 +39,6 @@ class PresenterInterface(ABC):
 
     @abstractmethod
     def raise_rough_solution_not_belongs_to_question_exception(self):
-        pass
-
-
-    @abstractmethod
-    def get_create_problem_statement_response(self, question_dto: QuestionDto):
         pass
 
 

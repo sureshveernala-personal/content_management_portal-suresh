@@ -19,10 +19,7 @@ def test_update_problem_stament_return_question_dto(
 
     # Act
     response = storage.update_problem_statement(
-        user_id=user_id,
-        short_text=short_text,
-        description=updated_description_dto,
-        question_id=question_id
+        user_id=user_id, question_dto=updated_question_dto
     )
 
     # Assert
@@ -31,5 +28,5 @@ def test_update_problem_stament_return_question_dto(
     question = Question.objects.get(id=question_id)
     assert question.created_by_id == user_id
     assert question.short_text == short_text
-    assert question.content == updated_description_dto.content
-    assert question.content_type == updated_description_dto.content_type
+    assert question.content == updated_question_dto.content
+    assert question.content_type == updated_question_dto.content_type

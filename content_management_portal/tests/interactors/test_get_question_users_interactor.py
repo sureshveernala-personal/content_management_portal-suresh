@@ -8,7 +8,7 @@ from content_management_portal.interactors.presenters.presenter_interface \
 from content_management_portal.interactors.get_question_user_interactor \
     import GetQuestionUserInteractor
 from content_management_portal.interactors.storages.dtos import UserDto
-
+from content_management_portal.tests.common_fixtures.adapters import auth_service
 
 def test_get_question_user_interactor_with_invalid_question_id():
     # Arrange
@@ -29,8 +29,8 @@ def test_get_question_user_interactor_with_invalid_question_id():
         )
 
 
-@patch('content_management_portal.adapters.user_service.UserService')
-def test_get_question_user_interactor_with_valid_details(user_service):
+# @patch('content_management_portal.adapters.user_service.UserService')
+def test_get_question_user_interactor_with_valid_details(mocker):
     # Arrange
     question_id = 1
     question_storage = create_autospec(
@@ -52,10 +52,11 @@ def test_get_question_user_interactor_with_valid_details(user_service):
             user_id=1
         )
     ]
+    auth_service.prepare_get_user_dtos_mock(mocker, user_ids=[1])
     question_storage.is_valid_question_id.return_value = True
     question_storage.get_question_user_id.return_value = [1]
     presenter.get_question_user_response.return_value = expected_dicts
-    user_service.get_user_dtos.return_value = expected_dto
+    # user_service.get_user_dtos.return_value = expected_dto
 
     # Act
     user_dicts = interactor.get_question_user_wrapper(

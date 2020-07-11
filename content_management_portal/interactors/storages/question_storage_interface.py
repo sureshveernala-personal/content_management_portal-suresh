@@ -15,21 +15,14 @@ class QuestionStorageInterface(ABC):
 
     @abstractmethod
     def create_problem_statement(
-            self,
-            user_id: int,
-            short_text: str,
-            description: DescriptionDto
+            self, user_id: int, question_dto: QuestionDto
         ) -> QuestionDto:
         pass
 
 
     @abstractmethod
     def update_problem_statement(
-            self,
-            user_id: int,
-            short_text: str,
-            description: DescriptionDto,
-            question_id: int
+            self, user_id: int, question_dto: QuestionDto
         ) -> int:
         pass
 

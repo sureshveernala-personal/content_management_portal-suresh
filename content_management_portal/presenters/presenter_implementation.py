@@ -1,9 +1,11 @@
 from datetime import datetime
 from typing import List, Dict
+import json
+from django.http import response
 from django_swagger_utils.drf_server.exceptions import NotFound, Forbidden,\
     BadRequest
 from content_management_portal.interactors.presenters.presenter_interface\
-    import PresenterInterface
+    import PresenterInterface, CreateProblemStatementPresenterInterface
 from content_management_portal.interactors.storages.dtos\
     import RoughSolutionWithQuestionIdDto, QuestionStatusDto,\
     RoughSolutionDto, TestCaseWithQuestionIdDto,\
@@ -21,34 +23,32 @@ from content_management_portal.constants.exception_messages import\
     HINT_NOT_BELONG_TO_QUESTION, INVALID_FIRST_TEST_CASE_ID,\
     INVALID_SECOND_TEST_CASE_ID, INVALID_FIRST_HINT_ID,\
     INVALID_SECOND_HINT_ID, SOLUTION_APPROACH_NOT_BELONG_TO_QUESTION,\
-    INVALID_SOLUTION_APPROACH_ID, CAN_NOT_CREATE_MORE_THEN_ONE_SOLUTION_APPROACH
+    INVALID_SOLUTION_APPROACH_ID,\
+    CAN_NOT_CREATE_MORE_THEN_ONE_SOLUTION_APPROACH
+from content_management_portal.presenters.mixins import QuestionValidationMixin
 
 
-class PresenterImplementation(PresenterInterface):
+class CreateProblemStatementPresenterImplementation(
+        QuestionValidationMixin, CreateProblemStatementPresenterInterface
+    ):
 
-    def raise_invalid_username_exception(self):
-        raise NotFound(*INVALID_USER_NAME)
-
-
-    def raise_invalid_password_exception(self):
-        raise Forbidden(*INVALID_PASSWORD)
-
-
-    def login_response(self, access_token):
-        access_token_dict = {
-            "user_id": access_token.user_id,
-            "access_token": access_token.access_token,
-            "refresh_token": access_token.refresh_token,
-            "expires_in": datetime.strftime(
-                access_token.expires_in, "%Y-%m-%d %H:%M:%S.%f"
-            )
+    def get_create_problem_statement_response(
+            self, question_dto: QuestionDto
+        ) -> response.HttpResponse:
+        question_dict = {
+            "question_id": question_dto.question_id,
+            "short_text": question_dto.short_text,
+            "problem_description": {
+                "content": question_dto.content,
+                "content_type": question_dto.content_type
+            }
         }
-        return access_token_dict
+
+        data = json.dumps(question_dict)
+        return response.HttpResponse(data, status=201)
 
 
-    def raise_invalid_question_id_exception(self):
-        raise NotFound(*INVALID_QUESTION_ID)
-
+class PresenterImplementation(QuestionValidationMixin, PresenterInterface):
 
     def raise_invalid_rough_solution_exception(self):
         raise NotFound(*INVALID_ROUGH_SOLUTION_ID)
@@ -58,34 +58,43 @@ class PresenterImplementation(PresenterInterface):
         raise BadRequest(*ROUGH_SOLUTION_NOT_BELONG_TO_QUESTION)
 
 
-    def get_create_problem_statement_response(self, question_dto: QuestionDto):
-        question_dict = {
-            "question_id": question_dto.question_id,
-            "short_text": question_dto.short_text,
-            "problem_description": {
-                "content": question_dto.content,
-                "content_type": question_dto.content_type
-            }
-        }
-        return question_dict
-
-
     def get_create_rough_solutions_response(
             self, question_id: int,
             rough_solution_with_question_id_dtos: \
                 RoughSolutionWithQuestionIdDto
         ):
-        rough_solution_dicts = [
-            self._get_rough_solution_dict(
-                rough_solution=rough_solution_dto
-            )
-            for rough_solution_dto in rough_solution_with_question_id_dtos
-        ]
+        rough_solution_dicts = self._get_rough_solution_dicts_list(
+            rough_solution_dtos=rough_solution_with_question_id_dtos
+        )
+
         rough_solution_with_question_id_dict = {
             "question_id": question_id,
             "rough_solutions": rough_solution_dicts
         }
         return rough_solution_with_question_id_dict
+
+    def _get_rough_solution_dicts_list(
+            self, rough_solution_dtos: List[RoughSolutionWithQuestionIdDto]
+        ) -> List:
+        rough_solution_dicts = [
+            self._get_rough_solution_dict(
+                rough_solution=rough_solution_dto
+            )
+            for rough_solution_dto in rough_solution_dtos
+        ]
+        return rough_solution_dicts
+
+    @staticmethod
+    def _get_rough_solution_dict(
+            rough_solution: RoughSolutionWithQuestionIdDto
+        ) -> Dict:
+        rough_solution_dict = {
+            "language": rough_solution.language,
+            "solution_content": rough_solution.solution_content,
+            "file_name": rough_solution.file_name,
+            "rough_solution_id": rough_solution.rough_solution_id
+        }
+        return rough_solution_dict
 
 
     def get_create_test_case_response(
@@ -142,17 +151,36 @@ class PresenterImplementation(PresenterInterface):
             prefilled_code_with_question_id_dtos: \
             PrefilledCodeWithQuestionIdDto
         ):
-        prefilled_code_dicts = [
-            self._get_prefilled_code_dict(
-                prefilled_code=prefilled_code_dto
-            )
-            for prefilled_code_dto in prefilled_code_with_question_id_dtos
-        ]
+        prefilled_code_dicts = self._get_prefilled_code_dicts_list(
+            prefilled_code_dtos=prefilled_code_with_question_id_dtos
+        )
         prefilled_code_with_question_id_dict = {
             "question_id": question_id,
             "prefilled_codes": prefilled_code_dicts
         }
         return prefilled_code_with_question_id_dict
+    
+    @staticmethod
+    def _get_prefilled_code_dict(
+            prefilled_code: PrefilledCodeWithQuestionIdDto
+        ) -> Dict:
+        prefilled_code_dict = {
+            "language": prefilled_code.language,
+            "solution_content": prefilled_code.solution_content,
+            "file_name": prefilled_code.file_name,
+            "prefilled_code_id": prefilled_code.prefilled_code_id
+        }
+        return prefilled_code_dict
+
+
+    def _get_prefilled_code_dicts_list(
+            self, prefilled_code_dtos: List[PrefilledCodeWithQuestionIdDto]
+        ):
+        prefilled_code_dicts = [
+            self._get_prefilled_code_dict(prefilled_code=prefilled_code_dto)
+            for prefilled_code_dto in prefilled_code_dtos
+        ]
+        return prefilled_code_dicts
 
 
     def raise_invalid_clean_solution_id_exception(self):
@@ -264,6 +292,38 @@ class PresenterImplementation(PresenterInterface):
         }
         return question_details_dict
 
+    def _get_statement_dict(self, question: QuestionDto) -> Dict:
+        statement_dict = {
+            "short_text": question.short_text,
+            "problem_description": {
+                "content": question.content,
+                "content_type": question.content_type
+            }
+        }
+        return statement_dict
+    
+    # @staticmethod
+    # def _get_prefilled_code_dict(
+    #         prefilled_code: PrefilledCodeWithQuestionIdDto
+    #     ) -> Dict:
+    #     prefilled_code_dict = {
+    #         "language": prefilled_code.language,
+    #         "solution_content": prefilled_code.solution_content,
+    #         "file_name": prefilled_code.file_name,
+    #         "prefilled_code_id": prefilled_code.prefilled_code_id
+    #     }
+    #     return prefilled_code_dict
+
+
+    # def _get_prefilled_code_dicts_list(
+    #         self, prefilled_code_dtos: List[PrefilledCodeWithQuestionIdDto]
+    #     ):
+    #     prefilled_code_dicts = [
+    #         self._get_prefilled_code_dict(prefilled_code=prefilled_code_dto)
+    #         for prefilled_code_dto in prefilled_code_dtos
+    #     ]
+    #     return prefilled_code_dicts
+
 
     def get_create_solution_approach_response(
             self, question_id: int, solution_approach_dto: SolutionApproachDto
@@ -284,6 +344,7 @@ class PresenterImplementation(PresenterInterface):
     def raise_solution_approach_not_belongs_to_question_exception(self):
         raise BadRequest(*SOLUTION_APPROACH_NOT_BELONG_TO_QUESTION)
 
+
     def raise_can_not_create_more_then_one_question(self):
         raise BadRequest(*CAN_NOT_CREATE_MORE_THEN_ONE_SOLUTION_APPROACH)
 
@@ -301,64 +362,6 @@ class PresenterImplementation(PresenterInterface):
         }
         return user_dict
 
-
-    def _get_statement_dict(self, question: QuestionDto) -> Dict:
-        statement_dict = {
-            "short_text": question.short_text,
-            "problem_description": {
-                "content": question.content,
-                "content_type": question.content_type
-            }
-        }
-        return statement_dict
-
-
-    @staticmethod
-    def _get_rough_solution_dict(
-            rough_solution: RoughSolutionWithQuestionIdDto
-        ) -> Dict:
-        rough_solution_dict = {
-            "language": rough_solution.language,
-            "solution_content": rough_solution.solution_content,
-            "file_name": rough_solution.file_name,
-            "rough_solution_id": rough_solution.rough_solution_id
-        }
-        return rough_solution_dict
-
-
-    def _get_rough_solution_dicts_list(
-            self, rough_solution_dtos: List[RoughSolutionWithQuestionIdDto]
-        ) -> List:
-        rough_solution_dicts = [
-            self._get_rough_solution_dict(
-                rough_solution=rough_solution_dto
-            )
-            for rough_solution_dto in rough_solution_dtos
-        ]
-        return rough_solution_dicts
-
-
-    @staticmethod
-    def _get_prefilled_code_dict(
-            prefilled_code: PrefilledCodeWithQuestionIdDto
-        ) -> Dict:
-        prefilled_code_dict = {
-            "language": prefilled_code.language,
-            "solution_content": prefilled_code.solution_content,
-            "file_name": prefilled_code.file_name,
-            "prefilled_code_id": prefilled_code.prefilled_code_id
-        }
-        return prefilled_code_dict
-
-
-    def _get_prefilled_code_dicts_list(
-            self, prefilled_code_dtos: List[PrefilledCodeWithQuestionIdDto]
-        ):
-        prefilled_code_dicts = [
-            self._get_prefilled_code_dict(prefilled_code=prefilled_code_dto)
-            for prefilled_code_dto in prefilled_code_dtos
-        ]
-        return prefilled_code_dicts
 
 
     @staticmethod

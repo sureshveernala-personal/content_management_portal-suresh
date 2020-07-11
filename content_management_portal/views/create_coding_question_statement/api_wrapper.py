@@ -6,7 +6,7 @@ from .validator_class import ValidatorClass
 from content_management_portal.storages.question_storage_implementation import\
     QuestionStorageImplementation
 from content_management_portal.presenters.presenter_implementation import\
-    PresenterImplementation
+    CreateProblemStatementPresenterImplementation
 from content_management_portal.interactors.create_problem_statement_interactor\
     import CreateProblemStatementInteractor
 
@@ -19,7 +19,7 @@ def api_wrapper(*args, **kwargs):
     short_text = request_data['short_text']
     description = request_data['problem_description']
     question_storage = QuestionStorageImplementation()
-    presenter = PresenterImplementation()
+    presenter = CreateProblemStatementPresenterImplementation()
     interactor = CreateProblemStatementInteractor(
         question_storage=question_storage, presenter=presenter
     )
@@ -29,6 +29,4 @@ def api_wrapper(*args, **kwargs):
         description=description,
         question_id=question_id
     )
-    
-    json_response = json.dumps(response)
-    return HttpResponse(json_response, status=201)
+    return response
