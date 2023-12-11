@@ -14,6 +14,10 @@ class HintStorageImplementation(HintStorageInterface):
                                                 .exists()
         return is_valid_hint_id
 
+    def is_valid_hint_ids(self, hint_ids: List[int]) -> bool:
+        is_valid_hint_ids = Hint.objects.filter(
+            id=hint_ids).exists()
+        return is_valid_hint_ids
 
     def is_hint_belongs_to_question(
             self, question_id: int, hint_id: int
